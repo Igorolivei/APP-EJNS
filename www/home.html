@@ -1,0 +1,15 @@
+<html>
+  <script language="JavaScript">
+	window.onload = function() {
+      document.getElementById('dataFiltro').value = new Date().toDateInputValue();
+    }
+  </script>
+  <body>
+	<h1> Testando </h1>
+	<p> Isso é um teste... </p>
+	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
+	<form id="formulario">
+	  <input type="button" value="Enviar" onClick="enviarEmail();" />
+	</form>
+  </body>
+</html>

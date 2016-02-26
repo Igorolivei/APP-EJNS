@@ -1,18 +1,23 @@
 <!DOCTIPE html>
 <html>
-	<head> Teste </head>
+	<head>
+	  <title>
+	    Teste
+	  </title>
+	</head>
 	<script language="JavaScript">
-	  function enviarEmail() {
-	  	alert("teste");
-	    window.open('mailto:igor.bezerra96@gmail.com');
+	  function autenticar() {
+	  	window.location.href = "home.html";
 	  }
 	</script>
 	<body>
-	  <h1> Testando </h1>
-	  <p> Isso é um teste... </p>
-	  <form id="formulario">
-	    <input type="text" value="Escreva aqui" />
-	    <input type="button" value="Enviar" onClick="enviarEmail();" />
+	  <h1> EJNS </h1>
+	  <form id="login">
+	    <label for="usuario">Usuário:</label><br>
+	    <input id="usuario" type="text" /><br>
+	    <label for="senha">Senha:</label><br>
+	    <input id="senha" type="password" /><br>
+	    <input type="button" value="Enviar" onclick="autenticar();" />
 	  </form>
 	</body>
 </html>
