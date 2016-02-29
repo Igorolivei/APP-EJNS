@@ -1,15 +1,27 @@
 <html>
-  <script language="JavaScript">
-	window.onload = function() {
-      document.getElementById('dataFiltro').value = new Date().toDateInputValue();
+  <style type="text/css">
+    label {
+    	text-align: right;
+        font-weight: bold;
     }
-  </script>
+  </style>
   <body>
-	<h1> Testando </h1>
-	<p> Isso Ã© um teste... </p>
+	<h1> Questionário EJNS </h1>
+	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
 	<form id="formulario">
+	  <label for="q1">1 - Oi, tudo bem?</label> <br>
+	  <input name="q1" id="q11" type="radio" checked>Sim <br>
+	  <input name="q1" id="q12" type="radio" >Não <br>
+
+	  <label for="q2">2 - De onde você é?</label> <br>
+	  <input id="q2" type="text" /> <br>
 	  <input type="button" value="Enviar" onClick="enviarEmail();" />
 	</form>
   </body>
 </html>
+<script language="JavaScript">
+  window.onload = function() {
+    document.getElementById('dataFiltro').value = new Date();//.getTime();
+  }
+</script>
