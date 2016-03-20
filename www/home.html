@@ -1,22 +1,131 @@
 <html>
-  <style type="text/css">
-    label {
-    	text-align: right;
-        font-weight: bold;
-    }
-  </style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
   <body>
-	<h1> Question�rio EJNS </h1>
-	<p> Responda o question�rio abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
+	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
-	<form id="formulario">
-	  <label for="q1">1 - Oi, tudo bem?</label> <br>
-	  <input name="q1" id="q11" type="radio" checked>Sim <br>
-	  <input name="q1" id="q12" type="radio" >N�o <br>
+	<h2>Questionário</h1>
+	<form id="questionario_ejns">
+		<div id="questionario_principal">
+			<fieldset>
+				<legend>Diário</legend>
+				  <p id="q1" class="questao">Como foi sua oração pessoal hoje?</p> <br>
+				  <select id="questao_1">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
 
-	  <label for="q2">2 - De onde voc� �?</label> <br>
-	  <input id="q2" type="text" /> <br>
-	  <input type="button" value="Enviar" onClick="enviarEmail();" />
+				  <p id="q2" class="questao">Rezou o TIME OUT hoje?</p> <br>
+				  <select id="questao_2">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q3" class="questao">Como foi sua pratica na escuta e meditação da palavra?</p> <br>
+				  <select id="questao_3">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q4" class="questao">Rezou o terço?</p> <br>
+				  <select id="questao_4">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q5" class="questao">Como foi a participação na missa e nos sacramentos?</p> <br>
+				  <select id="questao_5">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q6" class="questao">Você está cumprindo o ponto de esforço individual?</p> <br>
+				  <select id="questao_6">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q7" class="questao">Você está cumprindo o ponto de esforço em equipe?</p> <br>
+				  <select id="questao_7">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q8" class="questao">Como foi sua descoberta de si mesmo?</p> <br>
+				  <select id="questao_8">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q9" class="questao">Como foi sua vivencia na família?</p> <br>
+				  <select id="questao_9">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>
+
+				  <p id="q10" class="questao">Como foi sua vivencia na igreja e na sociedade?</p> <br>
+				  <select id="questao_10">
+				  	<option value="1">Ótimo</option>
+				  	<option value="2">Bom</option>
+				  	<option value="3">Regular</option>
+				  	<option value="4">Fraco</option>
+				  </select>					
+			</fieldset>
+		</div>
+		<div id="questionario_especial">
+			<fieldset class="radio">
+				<legend>Mensal</legend>
+				<p id="q11" class="questao">Você participou da missa mensal?</p> <br>
+					<input type="radio" id="questao_11_1" name="questao_11" value="1" checked>
+					<label class="radio-label" for="questao_11_1">Sim</label><br>
+	  				<input type="radio" name="questao_11_2" value="2">
+	  				<label class="radio-label" for="questao_11_2">Não</label><br>
+				<p id="q12" class="questao">Você participou da reunião formal?</p> <br>
+					<input type="radio" id="questao_12_1" name="questao_12" value="1" checked>
+					<label class="radio-label" for="questao_12_1">Sim</label><br>
+	  				<input type="radio" name="questao_12_2" value="2">
+	  				<label class="radio-label" for="questao_12_2">Não</label><br>
+				<p id="q13" class="questao">Você participou do terço em equipe?</p> <br>
+					<input type="radio" id="questao_13_1" name="questao_13" value="1" checked>
+					<label class="radio-label" for="questao_13_1">Sim</label><br>
+	  				<input type="radio" name="questao_13_2" value="2">
+	  				<label class="radio-label" for="questao_13_2">Não</label><br>
+				<p id="q14" class="questao">Você participou da reunião informal?</p> <br>
+					<input type="radio" id="questao_14_1" name="questao_14" value="1" checked>
+					<label class="radio-label" for="questao_14_1">Sim</label><br>
+	  				<input type="radio" name="questao_14_2" value="2">
+	  				<label class="radio-label" for="questao_14_2">Não</label><br>
+				<p id="q15" class="questao">Você participou dos eventos da EJNS?</p> <br>
+					<input type="radio" id="questao_15_1" name="questao_15" value="1" checked>
+					<label class="radio-label" for="questao_15_1">Sim</label><br>
+	  				<input type="radio" name="questao_15_2" value="2">
+	  				<label class="radio-label" for="questao_15_2">Não</label><br>
+				<p id="q16" class="questao">Você fez o estudo do tema?</p> <br>
+					<input type="radio" id="questao_16_1" name="questao_16" value="1" checked>
+					<label class="radio-label" for="questao_16_1">Sim</label><br>
+	  				<input type="radio" name="questao_16_2" value="2">
+	  				<label class="radio-label" for="questao_16_2">Não</label><br>
+			</fieldset>
+		</div>
+	<input type="button" value="Enviar" onClick="enviarEmail();" />
 	</form>
   </body>
 </html>
