@@ -1,0 +1,119 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <body>
+	<p> Selecione o equipista e a data do questionário. </p>
+	
+	<select id="equipistas" onchange="preencheDadosEquipista();"></select><br>
+
+	<label for="dataFiltro">Data: </label>
+	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
+	
+	<h2 id="nome_equipista">Selecione um equipista</h2>
+	<form id="questionario_ejns">
+		<div id="questionario_principal">
+			<fieldset>
+				<legend>Diário</legend>
+				  <p id="q1" class="questao">Como foi sua oração pessoal hoje?</p> <br>
+				  <p id="q1_resposta" class="resposta">-</p> <br>
+				  <p id="q2" class="questao">Rezou o TIME OUT hoje?</p> <br>
+				  <p id="q2_resposta" class="resposta">-</p> <br>
+				  <p id="q3" class="questao">Como foi sua pratica na escuta e meditação da palavra?</p> <br>
+				  <p id="q3_resposta" class="resposta">-</p> <br>
+				  <p id="q4" class="questao">Rezou o terço?</p> <br>
+				  <p id="q4_resposta" class="resposta">-</p> <br>
+				  <p id="q5" class="questao">Como foi a participação na missa e nos sacramentos?</p> <br>
+				  <p id="q5_resposta" class="resposta">-</p> <br>
+				  <p id="q6" class="questao">Você está cumprindo o ponto de esforço individual?</p> <br>
+				  <p id="q6_resposta" class="resposta">-</p> <br>
+				  <p id="q7" class="questao">Você está cumprindo o ponto de esforço em equipe?</p> <br>
+				  <p id="q7_resposta" class="resposta">-</p> <br>
+				  <p id="q8" class="questao">Como foi sua descoberta de si mesmo?</p> <br>
+				  <p id="q8_resposta" class="resposta">-</p> <br>
+				  <p id="q9" class="questao">Como foi sua vivencia na família?</p> <br>
+				  <p id="q9_resposta" class="resposta">-</p> <br>
+				  <p id="q10" class="questao">Como foi sua vivencia na igreja e na sociedade?</p> <br>		
+				  <p id="q10_resposta" class="resposta">-</p> <br>	
+			</fieldset>
+		</div>
+		<div id="questionario_especial">
+			<fieldset>
+				<legend>Mensal</legend>
+				<p id="q11" class="questao">Você participou da missa mensal?</p> <br>
+				<p id="q11_resposta" class="resposta">-</p> <br>
+				<p id="q12" class="questao">Você participou da reunião formal?</p> <br>
+				<p id="q12_resposta" class="resposta">-</p> <br>
+				<p id="q13" class="questao">Você participou do terço em equipe?</p> <br>
+				<p id="q13_resposta" class="resposta">-</p> <br>
+				<p id="q14" class="questao">Você participou da reunião informal?</p> <br>
+				<p id="q14_resposta" class="resposta">-</p> <br>
+				<p id="q15" class="questao">Você participou dos eventos da EJNS?</p> <br>
+				<p id="q15_resposta" class="resposta">-</p> <br>
+				<p id="q16" class="questao">Você fez o estudo do tema?</p> <br>
+				<p id="q16_resposta" class="resposta">-</p> <br>
+			</fieldset>
+		</div>
+	<input type="button" value="Enviar por Email" onClick="enviarEmail();" />
+	</form>
+  </body>
+</html>
+<script language="JavaScript">
+  window.onload = function() {
+    document.getElementById('dataFiltro').value = new Date();//.getTime();
+    listaEquipistas();
+  }
+  //Buscar os equipistas e colocar no select
+  function listaEquipistas() {
+  	var select = document.getElementById('equipistas');
+  	var fragment = document.createDocumentFragment();
+  	var equipistas = ["Marise", "Luana"];
+	equipistas.forEach(function(equipista, index){
+		var opt = document.createElement("option");
+		opt.value = equipista;
+		opt.innerHTML = equipista;
+		fragment.appendChild(opt);
+	});
+	select.appendChild(fragment);
+  }
+
+  function preencheDadosEquipista() {
+  	var nome = document.getElementById('equipistas').value;
+  	var respostas = [1, 2, 3, 3, 1, 2, 2, 4, 1, 4, 1, 2, 2, 2, 1, 1]
+  	document.getElementById('nome_equipista').innerHTML = nome;
+  	for (var i = 1; i <= respostas.length; i++) {
+  		var resposta = "-";
+  		if (i < 11){
+  			switch(respostas[i]){
+  				case 1:
+  					resposta = "Ótimo";
+  				break;
+  				case 2:
+  					resposta = "Bom";
+  				break;
+  				case 3:
+  					resposta = "Regular";
+  				break;
+  				case 4:
+  					resposta = "Fraco";
+  				break;
+  				default:
+  					resposta = "Não respondido";
+  				break;
+  			}
+  		} else {
+			switch(respostas[i]){
+  				case 1:
+  					resposta = "Sim";
+  				break;
+  				case 2:
+  					resposta = "Não";
+  				break;
+  				default:
+  					resposta = "Não respondido";
+  				break;
+  			}
+  		}
+  		document.getElementById('q'+i+'_resposta').innerHTML = resposta;
+  	}
+  }
+</script>

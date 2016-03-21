@@ -3,8 +3,9 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <body>
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
+	<label for="dataFiltro">Data: </label>
 	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
-	<h2>Questionário</h1>
+	<h2>Questionário</h2>
 	<form id="questionario_ejns">
 		<div id="questionario_principal">
 			<fieldset>
@@ -91,37 +92,37 @@
 			</fieldset>
 		</div>
 		<div id="questionario_especial">
-			<fieldset class="radio">
+			<fieldset>
 				<legend>Mensal</legend>
 				<p id="q11" class="questao">Você participou da missa mensal?</p> <br>
 					<input type="radio" id="questao_11_1" name="questao_11" value="1" checked>
 					<label class="radio-label" for="questao_11_1">Sim</label><br>
-	  				<input type="radio" name="questao_11_2" value="2">
+	  				<input type="radio" id="questao_11_2" name="questao_11" value="2">
 	  				<label class="radio-label" for="questao_11_2">Não</label><br>
 				<p id="q12" class="questao">Você participou da reunião formal?</p> <br>
 					<input type="radio" id="questao_12_1" name="questao_12" value="1" checked>
 					<label class="radio-label" for="questao_12_1">Sim</label><br>
-	  				<input type="radio" name="questao_12_2" value="2">
+	  				<input type="radio" id="questao_12_2" name="questao_12" value="2">
 	  				<label class="radio-label" for="questao_12_2">Não</label><br>
 				<p id="q13" class="questao">Você participou do terço em equipe?</p> <br>
 					<input type="radio" id="questao_13_1" name="questao_13" value="1" checked>
 					<label class="radio-label" for="questao_13_1">Sim</label><br>
-	  				<input type="radio" name="questao_13_2" value="2">
+	  				<input type="radio" id="questao_13_2" name="questao_13" value="2">
 	  				<label class="radio-label" for="questao_13_2">Não</label><br>
 				<p id="q14" class="questao">Você participou da reunião informal?</p> <br>
 					<input type="radio" id="questao_14_1" name="questao_14" value="1" checked>
 					<label class="radio-label" for="questao_14_1">Sim</label><br>
-	  				<input type="radio" name="questao_14_2" value="2">
+	  				<input type="radio" id="questao_14_2" name="questao_14" value="2">
 	  				<label class="radio-label" for="questao_14_2">Não</label><br>
 				<p id="q15" class="questao">Você participou dos eventos da EJNS?</p> <br>
 					<input type="radio" id="questao_15_1" name="questao_15" value="1" checked>
 					<label class="radio-label" for="questao_15_1">Sim</label><br>
-	  				<input type="radio" name="questao_15_2" value="2">
+	  				<input type="radio" id="questao_15_2" name="questao_15" value="2">
 	  				<label class="radio-label" for="questao_15_2">Não</label><br>
 				<p id="q16" class="questao">Você fez o estudo do tema?</p> <br>
 					<input type="radio" id="questao_16_1" name="questao_16" value="1" checked>
 					<label class="radio-label" for="questao_16_1">Sim</label><br>
-	  				<input type="radio" name="questao_16_2" value="2">
+	  				<input type="radio" id="questao_16_2" name="questao_16" value="2">
 	  				<label class="radio-label" for="questao_16_2">Não</label><br>
 			</fieldset>
 		</div>

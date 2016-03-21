@@ -32,52 +32,25 @@ select:hover
 
 /* CSS for radios */
 
-input[type=radio] {
-    display: none;
-}
-
-.radio-label:before {
-    content: "";
-    display: inline-block;
- 
-    width: 16px;
-    height: 16px;
- 
-    margin-right: 10px;
-    position: absolute;
-    left: 0;
-    bottom: 1px;
-    background-color: #aaa;
-    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
-}
-
-.radio label:before {
-    border-radius: 8px;
-}
-
-/*input[type="radio"]
+input[type="radio"]
 {
-	width: 8%;
-	height: 8%;
+	width: 5%;
+	height: 5%;
 	border-radius: 3px;
 	border: 1px solid #CCC;
 	font-weight: 200;
 	font-size: 15px;
 	font-family: Verdana;
-	box-shadow: 1px 1px 5px #CCC;
 	margin-left: 17%;
 }
 input[type="radio"]:hover
 {
-	width: 200px;
-	height: 29px;
 	border-radius: 3px;
 	border: 1px solid #CCC;
 	font-weight: 200;
 	font-size: 15px;
 	font-family: Verdana;
-	box-shadow: 1px 1px 5px #CCC;
-}*/
+}
 
 /* CSS for textfields */
 input[type='text'], input[type='password']
@@ -177,5 +150,12 @@ input[type='submit']:hover, input[type='button']:hover
 	font-family: Helvetica, serif, Arial;
 	font-style : normal;
 	font-weight: bold;
+	font-size  : 15px;
+}
+
+.resposta {
+	font-family: Helvetica, serif, Arial;
+	font-style : italic;
+	font-weight: normal;
 	font-size  : 15px;
 }

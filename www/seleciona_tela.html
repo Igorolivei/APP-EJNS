@@ -1,0 +1,50 @@
+<!DOCTIPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<head>
+	  <title>
+	    EJNS
+	  </title>
+	</head>
+	<!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<body onload="valida_permissao();">
+	  <form id="login">
+	    <input type="button" id="btn_lider" value="Líder/Vice" style="margin-top: 35%" onclick="redirecionar_tela(1);" />
+	    <br><br>
+	    <input type="button" id="btn_equipista" value="Equipista" onclick="redirecionar_tela(2);" />
+	  </form>
+	</body>
+</html>
+<script language="JavaScript">
+  function redirecionar_tela(tipo) {
+  	switch (tipo) {
+		case 1:
+	  		window.location.href = "home_lider.html";
+	  	break;
+	  	case 2:
+	  	default:
+	  		window.location.href = "home_equipista.html";
+	  	break;
+  	}
+  }
+  function valida_permissao() {
+  	var tipo_permissao = 3;
+  	switch(tipo_permissao) {
+  		//líder
+  		case 1:
+  			document.getElementById('btn_equipista').style.visibility = 'hidden';
+  		break;
+  		//equipista
+  		case 2:
+  			document.getElementById('btn_lider').style.visibility = 'hidden';
+  		break;
+  		//vice-lider
+  		case 3:
+  		default:
+  			document.getElementById('btn_equipista').style.visibility = 'visible';
+  			document.getElementById('btn_lider').style.visibility     = 'visible';
+  		break;
+  	}
+  }
+</script>
