@@ -4,7 +4,9 @@
   <body>
 	<p> Selecione o equipista e a data do questionário. </p>
 	
-	<select id="equipistas" onchange="preencheDadosEquipista();"></select><br>
+	<select id="equipistas" onchange="preencheDadosEquipista();">
+		<option value="Nenhum">Nenhum</option>
+	</select><br><br>
 
 	<label for="dataFiltro">Data: </label>
 	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>

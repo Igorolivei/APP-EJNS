@@ -6,7 +6,7 @@ width:100px;
 }
 
 /* CSS for dropdown box */
-select
+select, input[type="date"]
 {
 	width: 200px;
 	height: 29px;
