@@ -79,6 +79,11 @@
   }
 
   function preencheDadosEquipista() {
+  	/*var objJSON = "{'nome': 'Marise', 'aQuestoes': {1: 1, 2: 4, 3: 2, 4: 1, 5: 1}}, {'nome': 'Luana', 'aQuestoes': {1: 1, 2: 2, 3: 4, 4: 1, 5: 2}}"
+
+  	var objDecoded = (eval('('+objJSON+')'));
+  	console.log(objDecoded);*/
+
   	var nome = document.getElementById('equipistas').value;
   	var respostas = [1, 2, 3, 3, 1, 2, 2, 4, 1, 4, 1, 2, 2, 2, 1, 1]
   	document.getElementById('nome_equipista').innerHTML = nome;
