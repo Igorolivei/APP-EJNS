@@ -55,8 +55,9 @@ CREATE TABLE app_questionario.usuario (
   id_usuario SERIAL NOT NULL,
   nome VARCHAR NOT NULL,
   data_nascimento DATE NOT NULL,
-  tipo_usuario INTEGER NULL,
+  tipo_usuario INTEGER NOT NULL,
   id_equipe INTEGER NULL,
+  ativo BOOL NOT NULL,
   PRIMARY KEY(id_usuario),
   FOREIGN KEY(tipo_usuario)
     REFERENCES app_questionario.tipo_usuario(id_tipousuario)
