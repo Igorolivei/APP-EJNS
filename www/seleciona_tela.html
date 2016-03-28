@@ -3,13 +3,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<head>
 	  <title>
-	    EJNS
+	    PPV - EJNS
 	  </title>
+	  <script src="js/sessionCookie.js" type="text/javascript"></script>
 	</head>
 	<!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<body onload="valida_permissao();">
-	  <form id="login">
+	  <form id="login" onsubmit="return false;">
 	    <input type="button" id="btn_lider" value="Líder/Vice" style="margin-top: 35%" onclick="redirecionar_tela(1);" />
 	    <br><br>
 	    <input type="button" id="btn_equipista" value="Equipista" onclick="redirecionar_tela(2);" />
@@ -30,6 +31,8 @@
   }
   function valida_permissao() {
   	var tipo_permissao = 3;
+  	var tipo_usuario = readCookie('tipo_usuario');
+  	alert(tipo_usuario);
   	switch(tipo_permissao) {
   		//líder
   		case 1:

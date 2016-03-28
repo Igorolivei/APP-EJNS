@@ -44,11 +44,11 @@ CREATE TABLE usuario (
   id_usuario INT UNSIGNED NOT NULL AUTO_INCREMENT,
   nome VARCHAR(250) NOT NULL,
   data_nascimento DATE NOT NULL,
-  tipo_usuario INT UNSIGNED NOT NULL,
+  id_tipousuario INT UNSIGNED NOT NULL,
   id_equipe INT UNSIGNED NULL,
   ativo BOOL NOT NULL,
   PRIMARY KEY(id_usuario),
-  FOREIGN KEY(tipo_usuario)
+  FOREIGN KEY(id_tipousuario)
     REFERENCES tipo_usuario(id_tipousuario)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION,
@@ -64,7 +64,7 @@ CREATE TABLE usuario (
 CREATE TABLE usuario_login (
   id_usuariologin INT UNSIGNED NOT NULL AUTO_INCREMENT,
   login VARCHAR(20) NOT NULL,
-  senha VARCHAR(20) NOT NULL,
+  senha VARCHAR(32) NOT NULL,
   id_usuario INT UNSIGNED NOT NULL,
   PRIMARY KEY(id_usuariologin),
   FOREIGN KEY(id_usuario)
@@ -90,4 +90,14 @@ CREATE TABLE usuario_questionario (
 );
 
 
+CREATE TABLE IF NOT EXISTS aviso (
+  id_aviso INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  texto TEXT NOT NULL,
+  id_equipe INT UNSIGNED NOT NULL,
+  ativo BOOL NOT NULL,
+  PRIMARY KEY(id_aviso),
+  FOREIGN KEY(id_equipe)
+    REFERENCES equipe(id_equipe)
+);
 
+--INSERT INTO AVISO (texto, id_equipe, ativo) VALUES ('Bem-vindo!', 1, true);

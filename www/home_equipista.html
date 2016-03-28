@@ -5,8 +5,8 @@
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<label for="dataFiltro">Data: </label>
 	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
-	<h2>Questionário</h2>
-	<form id="questionario_ejns">
+	<h2>PPV</h2>
+	<form id="questionario_ejns" onsubmit="return false;">
 		<div id="questionario_principal">
 			<fieldset>
 				<legend>Diário</legend>
@@ -126,12 +126,64 @@
 	  				<label class="radio-label" for="questao_16_2">Não</label><br>
 			</fieldset>
 		</div>
-	<input type="button" value="Enviar" onClick="enviarEmail();" />
+	<input type="button" value="Enviar" onClick="salvarAjax();" />
 	</form>
   </body>
 </html>
 <script language="JavaScript">
   window.onload = function() {
     document.getElementById('dataFiltro').value = new Date();//.getTime();
+  }
+
+  function salvar() {
+  	var oParams = new Object();
+  	oParams.method = 'getSetores';
+  	oParams.id_setor = 1;
+  	console.log(JSON.stringify(oParams));
+  	alert(JSON.stringify(oParams));
+
+
+  	window.location.href = "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams);
+  }
+
+  function salvarAjax(){
+
+  	var Ajax = new XMLHttpRequest();
+
+    var oParams = new Object();
+  	oParams.method = 'getSetores';
+
+    Ajax.open("POST", "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams), true);
+    Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    Ajax.onreadystatechange = function () {
+        console.log(response);
+        var response = "";
+
+        if (Ajax.readyState == 1) {
+            response += "Status 1: Server connection established ! <br/>";
+        } else if (Ajax.readyState == 2) {
+            response += "Status 2: Request recieved ! <br/>";
+        } else if (Ajax.readyState == 3) {
+            response += "Status 3: Processing Request ! <br/>";
+
+        } else if (Ajax.readyState == 4) {
+            if (Ajax.status == 200) {
+                var text = Ajax.responseText;
+                response += "Status 4: Processing Request ! <br/>";
+                response += text;
+                alert(response);
+            } else {
+                alert("Something is wrong !");
+            }
+        }
+    }
+    //If an error occur during the Ajax call.
+    if (Ajax.readyState == 4 && Ajax.status == 404) {
+        console.log("Error during Ajax call");
+    }
+
+
+    Ajax.send(JSON.stringify(oParams));
   }
 </script>
