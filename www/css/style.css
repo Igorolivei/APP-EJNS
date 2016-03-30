@@ -134,8 +134,10 @@ input[type='submit']:hover, input[type='button']:hover
 	font-style : normal;
 	font-weight: normal;
 	font-size  : 40px;
-	padding-top: 30%;
-	padding-left: 35%;
+	padding-top: 15%;
+	padding-left: 15%;
+	padding-right: 15%;
+	text-align: center;
 }
 
 .login-label {
@@ -158,4 +160,15 @@ input[type='submit']:hover, input[type='button']:hover
 	font-style : italic;
 	font-weight: normal;
 	font-size  : 15px;
+}
+
+.erro {
+	font-family: Helvetica, serif, Arial;
+	font-style : italic;
+	font-weight: normal;
+	font-size  : 15px;
+	margin-left: 15%;
+	margin-right: 15%;
+	text-align: center;
+	color : red;
 }

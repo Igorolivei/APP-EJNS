@@ -7,6 +7,8 @@ header("Access-Control-Allow-Origin: *");
 $oParams = json_decode($_GET['oParams']);
 //echo $_GET['oParams'];
 
+$oRetorno = new stdObject();
+$oRetorno->status = 0;
 $method = "getSetores";
 switch ($oParams->method) {
 	
@@ -30,7 +32,7 @@ switch ($oParams->method) {
 					INNER JOIN setor   s on s.id_setor   = e.id_setor
 					INNER JOIN tipo_usuario tu on tu.id_tipousuario = u.id_tipousuario
 				WHERE ul.login = '".$oParams->login."' and ul.senha = '".md5($oParams->senha)."' LIMIT 1";
-//die($sql);
+
 		$resultLogin = $pdo->query($sql);
 		$row = $resultLogin->fetch();
 
@@ -45,11 +47,14 @@ switch ($oParams->method) {
 			$oUsuario->perm_le_resposta = $row['le_respostas'];
 			$oUsuario->nome_equipe      = $row['equipe'];
 			$oUsuario->setor            = $row['setor'];
+
+			$oRetorno->usuario = $oUsuario;
 		} else {
-			echo "Usuário não encontrado";
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Usuário não encontrado";
 		}
 
-		echo json_encode($oUsuario);
+		echo json_encode($oRetorno);
 	break;
 
 	//SETOR

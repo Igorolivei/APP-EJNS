@@ -30,24 +30,10 @@
   	}
   }
   function valida_permissao() {
-  	var tipo_permissao = 3;
-  	var tipo_usuario = readCookie('tipo_usuario');
-  	alert(tipo_usuario);
-  	switch(tipo_permissao) {
-  		//líder
-  		case 1:
-  			document.getElementById('btn_equipista').style.visibility = 'hidden';
-  		break;
-  		//equipista
-  		case 2:
-  			document.getElementById('btn_lider').style.visibility = 'hidden';
-  		break;
-  		//vice-lider
-  		case 3:
-  		default:
-  			document.getElementById('btn_equipista').style.visibility = 'visible';
-  			document.getElementById('btn_lider').style.visibility     = 'visible';
-  		break;
-  	}
+  	
+  	readCookie('responde');
+	readCookie('le_respostas');
+  	document.getElementById('btn_equipista').style.visibility = readCookie('responde') == 1 ? 'visible' : 'hidden';
+  	document.getElementById('btn_lider').style.visibility = readCookie('le_respostas') ? 'visible' : 'hidden';
   }
 </script>
