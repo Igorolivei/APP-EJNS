@@ -1,6 +1,8 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="js/sessionCookie.js" type="text/javascript"></script>
+  <script src="js/js_utils.js" type="text/javascript"></script>
   <body>
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<label for="dataFiltro">Data: </label>
@@ -126,7 +128,7 @@
 	  				<label class="radio-label" for="questao_16_2">Não</label><br>
 			</fieldset>
 		</div>
-	<input type="button" value="Enviar" onClick="salvarAjax();" />
+	<input type="button" value="Enviar" onClick="salvar();" />
 	</form>
   </body>
 </html>
@@ -135,7 +137,7 @@
     document.getElementById('dataFiltro').value = new Date();//.getTime();
   }
 
-  function salvar() {
+  /*function salvar() {
   	var oParams = new Object();
   	oParams.method = 'getSetores';
   	oParams.id_setor = 1;
@@ -144,46 +146,47 @@
 
 
   	window.location.href = "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams);
-  }
+  }*/
 
-  function salvarAjax(){
+function teste(word) {
+	alert(word);
+}
 
-  	var Ajax = new XMLHttpRequest();
+  function salvar(){
+
+  	var aRespostas = new Array();
+
+    for (var i = 1; i <= 10; i++) {
+    	var oResposta = new Object();
+    	var obj 	  = document.getElementById('questao_'+i);
+    	var resposta  = obj.options[obj.selectedIndex].value;
+
+    	oResposta.questao  = i;
+    	oResposta.resposta = resposta;
+
+    	aRespostas.push(oResposta);
+    }
+
+    /*if (data == 25) {
+    	for (var i = 11; i <= 15; i++) {
+	    	var oResposta = new Object();
+	    	var obj 	  = document.getElementById('questao_'+i).checked;
+	    	var resposta  = obj.value;
+
+	    	oResposta.questao  = i;
+	    	oResposta.resposta = resposta;
+
+	    	aRespostas.push(oResposta);
+    	}
+    //}*/    
 
     var oParams = new Object();
-  	oParams.method = 'getSetores';
+  	oParams.method = 'salvarQuestionario';
+  	oParams.id_usuario = readCookie('id_usuario');
+  	oParams.data  	   = getToday();
+  	oParams.aRespostas = JSON.stringify(aRespostas);
 
-    Ajax.open("POST", "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams), true);
-    Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	AJAXRequest("POST", oParams, "teste");
 
-    Ajax.onreadystatechange = function () {
-        console.log(response);
-        var response = "";
-
-        if (Ajax.readyState == 1) {
-            response += "Status 1: Server connection established ! <br/>";
-        } else if (Ajax.readyState == 2) {
-            response += "Status 2: Request recieved ! <br/>";
-        } else if (Ajax.readyState == 3) {
-            response += "Status 3: Processing Request ! <br/>";
-
-        } else if (Ajax.readyState == 4) {
-            if (Ajax.status == 200) {
-                var text = Ajax.responseText;
-                response += "Status 4: Processing Request ! <br/>";
-                response += text;
-                alert(response);
-            } else {
-                alert("Something is wrong !");
-            }
-        }
-    }
-    //If an error occur during the Ajax call.
-    if (Ajax.readyState == 4 && Ajax.status == 404) {
-        console.log("Error during Ajax call");
-    }
-
-
-    Ajax.send(JSON.stringify(oParams));
-  }
+}
 </script>

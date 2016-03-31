@@ -6,6 +6,7 @@
 	    PPV - EJNS
 	  </title>
 	  <script src="js/sessionCookie.js" type="text/javascript"></script>
+  	<script src="js/js_utils.js" type="text/javascript"></script>
 	</head>
 	<!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -26,10 +27,8 @@
   	window.location.href = "seleciona_tela.html";
   }*/
 
-  function autenticar(){
+function autenticar(){
 
-  	var Ajax = new XMLHttpRequest();
-  	
   	var usuario = document.getElementById('usuario').value;
 		var senha   = document.getElementById('senha').value;
 
@@ -43,53 +42,31 @@
   	oParams.login  = usuario;
   	oParams.senha  = senha;
 
-    Ajax.open("POST", "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams), true);
-    Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    AJAXRequest("POST", oParams, "concluiAutenticacao");
 
-    Ajax.onreadystatechange = function () {
-        
-        /*if (Ajax.readyState == 1) {
-            response += "Status 1: Server connection established!";
-        } else if (Ajax.readyState == 2) {
-            response += "Status 2: Request recieved!";
-        } else if (Ajax.readyState == 3) {
-            response += "Status 3: Processing Request!";
+}
 
-        } else */if (Ajax.readyState == 4) {
+function concluiAutenticacao(oAjax) {
             
-            if (Ajax.status == 200) {
-            
-                var obj = eval('('+Ajax.responseText+')');
-                
-                if (obj.status == 0) {
+  var obj = oAjax;
+  
+  if (obj.status == 0) {
 
-                	with (obj.usuario) {
-                		//os dados de uma sessão de login (cookies) duram uma semana
-            				writeCookie('id_usuario', id_usuario, 7);
-										writeCookie('nome', nome, 7);
-										writeCookie('data_nasc', data_nasc, 7);
-										writeCookie('id_tipousuario', id_tipousuario, 7);
-										writeCookie('tipo_usuario', tipo_usuario, 7);
-										writeCookie('responde', perm_responde, 7);
-										writeCookie('le_respostas', perm_le_resposta, 7);
-										writeCookie('equipe', nome_equipe, 7);
-										writeCookie('setor', setor, 7);
-                	}
-                	window.location.href = "seleciona_tela.html";
-                } else {
-            			document.getElementById('erro_login').innerHTML = "Erro no login. Verifique se o usuário e a senha estão corretos.";
-                }
-            } else {
-                
-                document.getElementById('erro_login').innerHTML = "Ocorreu algum erro. Contate o administrador!";
-            }
-        }
-    }
-    //If an error occur during the Ajax call.
-    if (Ajax.readyState == 4 && Ajax.status == 404) {
-        document.getElementById('erro_login').innerHTML = "Erro na requisição ao servidor. Verifique a conexão com a internet ou contate o administrador.";
-    }
-
-    Ajax.send(JSON.stringify(oParams));
+  	with (obj.usuario) {
+  		//os dados de uma sessão de login (cookies) duram uma semana
+			writeCookie('id_usuario', id_usuario, 7);
+			writeCookie('nome', nome, 7);
+			writeCookie('data_nasc', data_nasc, 7);
+			writeCookie('id_tipousuario', id_tipousuario, 7);
+			writeCookie('tipo_usuario', tipo_usuario, 7);
+			writeCookie('responde', perm_responde, 7);
+			writeCookie('le_respostas', perm_le_resposta, 7);
+			writeCookie('equipe', nome_equipe, 7);
+			writeCookie('setor', setor, 7);
+  	}
+  	window.location.href = "seleciona_tela.html";
+  } else {
+		document.getElementById('erro_login').innerHTML = "Erro no login. Verifique se o usuário e a senha estão corretos.";
   }
+}
 </script>

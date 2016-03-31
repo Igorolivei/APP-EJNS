@@ -79,7 +79,7 @@ switch ($oParams->method) {
 		$sql = "SELECT * 
 				FROM setor s 
 					INNER JOIN equipe e on e.id_setor = s.id_setor
-				WHERE e.id_equipe = $oParam->id_equipe";
+				WHERE e.id_equipe = $oParams->id_equipe";
  		$result = $pdo->query($sql);
 
 		$aSetores = Array();
@@ -90,7 +90,7 @@ switch ($oParams->method) {
 		 	$aSetores[] = $setor; 
 		}
 		echo json_encode($aSetores);
-		print_r($aSetores);
+		//print_r($aSetores);
 	break;
 
 	//EQUIPE
@@ -122,6 +122,26 @@ switch ($oParams->method) {
 
 	case 'getQuestionarioPessoaData':
 
+	break;
+
+	case 'salvarQuestionario':
+
+		$aRespostas = json_decode($oParams->aRespostas);
+		$idUsuario  = $oParams->id_usuario;
+		$data 		= $oParams->data;
+		foreach ($aRespostas as $oResposta) {
+			$questao  = $oResposta->questao;
+			$resposta = $oResposta->resposta;
+			$sql  = "INSERT INTO usuario_questionario (id_usuario, questao, resposta, data_resposta) VALUES (".$idUsuario.", ".$questao.", ".$resposta.", '".$data."')";
+			$erro = $pdo->query($sql);
+		}
+
+		if (!$erro) {
+			$oRetorno->status = 1;
+			$oRetorno->msg 	  = "Erro na inserção dos dados.".$pdo->error;
+		}
+
+		echo json_encode($oRetorno);
 	break;
 
 	//AVISO
