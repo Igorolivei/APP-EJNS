@@ -6,7 +6,7 @@
   <body>
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<label for="dataFiltro">Data: </label>
-	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
+	<input type="date" id="dataFiltro" onfocus="this.value='';" onblur="if (this.value == '') { this.value = dateToBR(getToday()); getRespostas() } else { getRespostas(); }"><br>
 	<h2>PPV</h2>
 	<form id="questionario_ejns" onsubmit="return false;">
 		<div id="questionario_principal">
@@ -134,7 +134,7 @@
 </html>
 <script language="JavaScript">
   window.onload = function() {
-    document.getElementById('dataFiltro').value = new Date();//.getTime();
+    document.getElementById('dataFiltro').value = dateToBR(getToday());//.getTime();
   }
 
   /*function salvar() {
@@ -152,8 +152,9 @@ function teste(word) {
 	alert(word);
 }
 
-  function salvar(){
+function salvar(){
 
+  	var data_form  = dateToEN(document.getElementById('dataFiltro').value);
   	var aRespostas = new Array();
 
     for (var i = 1; i <= 10; i++) {
@@ -183,10 +184,34 @@ function teste(word) {
     var oParams = new Object();
   	oParams.method = 'salvarQuestionario';
   	oParams.id_usuario = readCookie('id_usuario');
-  	oParams.data  	   = getToday();
+  	oParams.data  	   = data_form;
   	oParams.aRespostas = JSON.stringify(aRespostas);
 
 	AJAXRequest("POST", oParams, "teste");
 
+}
+
+function getRespostas() {
+	
+	var data_form  = dateToEN(document.getElementById('dataFiltro').value);
+
+	var oParams    = new Object();
+	oParams.method = 'getQuestionarioPessoaData';
+	oParams.id_usuario = readCookie('id_usuario');
+  	oParams.data  	   = data_form;
+
+  	AJAXRequest("POST", oParams, "completaRespostas");
+}
+
+function completaRespostas(oAjax) {
+
+	if (oAjax.status == 1) {
+		alert("Não há respostas para esta data.");
+		return false;
+	} else {
+
+		alert("ok");
+	}
+	return false;
 }
 </script>

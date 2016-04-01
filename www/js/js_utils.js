@@ -1,3 +1,39 @@
+/* ========== GERAL ==========  */
+
+//formata de forma genérica os campos
+function formataCampo(campo, Mascara, evento) { 
+    
+    var indMascara; 
+	var tecla = evento.keyCode;
+    campoSoNumeros = campo.value.toString().replace(/\-|\.|\/|\(|\)| /g, "" ); 
+
+    var posicaoCampo   = 0;    
+    var novoValorCampo = "";
+    var tamanhoMascara = campoSoNumeros.length;; 
+
+    if (tecla != 8) { // backspace 
+        for(i=0; i<= tamanhoMascara; i++) { 
+            indMascara  = ((Mascara.charAt(i) == "-") || (Mascara.charAt(i) == ".") || (Mascara.charAt(i) == "/"));
+            indMascara  = indMascara || ((Mascara.charAt(i) == "(") || (Mascara.charAt(i) == ")") || (Mascara.charAt(i) == " "));
+            if (indMascara) { 
+                novoValorCampo += Mascara.charAt(i); 
+                tamanhoMascara++;
+            }else { 
+                novoValorCampo += campoSoNumeros.charAt(posicaoCampo); 
+                posicaoCampo++; 
+            }              
+   	    }      
+
+    	campo.value = novoValorCampo;
+        return true; 
+    } else {
+
+        return true; 
+    }
+}
+
+/* ========== DATAS ==========  */
+
 function getToday() {
 	var today = new Date();
 	var day   = today.getDate();
@@ -13,8 +49,28 @@ function getToday() {
 	} 
 
 	today = year+'-'+month+'-'+day;
-	return today;
+	return new Date(today);
 }
+
+//recebe data no formato que vem do banco e retorna uma string no formato BR
+function dateToBR(date) {
+	var year  = date.getFullYear();
+  	var month = (1 + date.getMonth()).toString();
+  	var day   = date.getDate().toString();
+
+  	month     = month.length > 1 ? month : '0'+month;
+  	day       = day.length > 1 ? day : '0'+day;
+  	return day + '/' + month + '/' + year;
+}
+
+//recebe uma data no formato BR e transforma para o formato EN (para inserir no banco)
+function dateToEN(date) {
+
+    var parts = date.split("/");
+    return parts[2] + "-" + parts[1] + "-" + parts[0];
+}
+
+/* ========== AJAX ==========  */ 
 
 /*
  * Recebe o método (GET ou POST), o objeto dos parâmetros, e a função que será chamada ao concluir

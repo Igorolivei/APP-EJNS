@@ -10,6 +10,7 @@ $oParams = json_decode($_GET['oParams']);
 $oRetorno = new stdObject();
 $oRetorno->status = 0;
 $method = "getSetores";
+
 switch ($oParams->method) {
 	
 	//try {
@@ -71,7 +72,10 @@ switch ($oParams->method) {
 			$setor->descricao = $row['descr'];
 		 	$aSetores[] = $setor; 
 		}
-		echo json_encode($aSetores);
+
+		$oRetorno->setores = $aSetores;
+
+		echo json_encode($oRetorno);
 	break;
 	
 	case 'getSetorPorEquipe':
@@ -122,6 +126,35 @@ switch ($oParams->method) {
 
 	case 'getQuestionarioPessoaData':
 
+		$idUsuario = $oParams->id_usuario;
+		$data  	   = $oParams->data;
+
+		$sql = "SELECT 
+				 	questao,
+				 	resposta
+				FROM usuario_questionario 
+				WHERE id_usuario = $id_usuario and 
+					  data = $data";
+
+		$resultQuestionario = $pdo->query($sql);
+
+		if ($result) {
+			
+			$aRespostas = Array();
+			while ($row = $resultQuestionario->fetch()) 
+			{
+				$resposta = new stdObject();
+				$resposta->questao  = $row['questao'];
+				$resposta->resposta = $row['resposta'];
+			 	$aRespostas[] = $resposta; 
+			}
+
+			$oRetorno->respostas = $aRespostas;
+		} else {
+			$oRetorno->status = 1;
+		}
+
+		echo json_encode($oRetorno);
 	break;
 
 	case 'salvarQuestionario':

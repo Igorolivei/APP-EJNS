@@ -23,9 +23,13 @@
 	</body>
 </html>
 <script language="JavaScript">
-  /*function autenticar() {
+
+window.onload = function() {
+  if (readCookie('id_usuario') && readCookie('id_usuario') !== 0) {
+  	
   	window.location.href = "seleciona_tela.html";
-  }*/
+  }
+}
 
 function autenticar(){
 
