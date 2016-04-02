@@ -4,16 +4,16 @@
   <script src="js/sessionCookie.js" type="text/javascript"></script>
   <script src="js/js_utils.js" type="text/javascript"></script>
   <body>
+	<h2 class="titulo">PPV</h2>
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<label for="dataFiltro">Data: </label>
 	<input type="date" id="dataFiltro" onfocus="this.value='';" onblur="if (this.value == '') { this.value = dateToBR(getToday()); getRespostas() } else { getRespostas(); }"><br>
-	<h2>PPV</h2>
 	<form id="questionario_ejns" onsubmit="return false;">
 		<div id="questionario_principal">
 			<fieldset>
 				<legend>Diário</legend>
 				  <p id="q1" class="questao">Como foi sua oração pessoal hoje?</p> <br>
-				  <select id="questao_1">
+				  <select id="questao_1" name="questao_1">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -21,7 +21,7 @@
 				  </select>
 
 				  <p id="q2" class="questao">Rezou o TIME OUT hoje?</p> <br>
-				  <select id="questao_2">
+				  <select id="questao_2" name="questao_2">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -29,7 +29,7 @@
 				  </select>
 
 				  <p id="q3" class="questao">Como foi sua pratica na escuta e meditação da palavra?</p> <br>
-				  <select id="questao_3">
+				  <select id="questao_3" name="questao_3">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -37,7 +37,7 @@
 				  </select>
 
 				  <p id="q4" class="questao">Rezou o terço?</p> <br>
-				  <select id="questao_4">
+				  <select id="questao_4" name="questao_4">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -45,7 +45,7 @@
 				  </select>
 
 				  <p id="q5" class="questao">Como foi a participação na missa e nos sacramentos?</p> <br>
-				  <select id="questao_5">
+				  <select id="questao_5" name="questao_5">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -53,7 +53,7 @@
 				  </select>
 
 				  <p id="q6" class="questao">Você está cumprindo o ponto de esforço individual?</p> <br>
-				  <select id="questao_6">
+				  <select id="questao_6" name="questao_6">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -61,7 +61,7 @@
 				  </select>
 
 				  <p id="q7" class="questao">Você está cumprindo o ponto de esforço em equipe?</p> <br>
-				  <select id="questao_7">
+				  <select id="questao_7" name="questao_7">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -69,7 +69,7 @@
 				  </select>
 
 				  <p id="q8" class="questao">Como foi sua descoberta de si mesmo?</p> <br>
-				  <select id="questao_8">
+				  <select id="questao_8" name="questao_8">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -77,7 +77,7 @@
 				  </select>
 
 				  <p id="q9" class="questao">Como foi sua vivencia na família?</p> <br>
-				  <select id="questao_9">
+				  <select id="questao_9" name="questao_9">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -85,7 +85,7 @@
 				  </select>
 
 				  <p id="q10" class="questao">Como foi sua vivencia na igreja e na sociedade?</p> <br>
-				  <select id="questao_10">
+				  <select id="questao_10" name="questao_10">
 				  	<option value="1">Ótimo</option>
 				  	<option value="2">Bom</option>
 				  	<option value="3">Regular</option>
@@ -128,29 +128,16 @@
 	  				<label class="radio-label" for="questao_16_2">Não</label><br>
 			</fieldset>
 		</div>
-	<input type="button" value="Enviar" onClick="salvar();" />
+	<input id="btn_salvar" type="button" value="Enviar" onClick="salvar();" />
 	</form>
   </body>
 </html>
 <script language="JavaScript">
-  window.onload = function() {
-    document.getElementById('dataFiltro').value = dateToBR(getToday());//.getTime();
-  }
-
-  /*function salvar() {
-  	var oParams = new Object();
-  	oParams.method = 'getSetores';
-  	oParams.id_setor = 1;
-  	console.log(JSON.stringify(oParams));
-  	alert(JSON.stringify(oParams));
-
-
-  	window.location.href = "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams);
-  }*/
-
-function teste(word) {
-	alert(word);
+window.onload = function() {
+  document.getElementById('dataFiltro').value = dateToBR(getToday());
 }
+
+document.getElementById("btn_salvar").addEventListener("click", salvar, false);
 
 function salvar(){
 
@@ -158,6 +145,7 @@ function salvar(){
   	var aRespostas = new Array();
 
     for (var i = 1; i <= 10; i++) {
+
     	var oResposta = new Object();
     	var obj 	  = document.getElementById('questao_'+i);
     	var resposta  = obj.options[obj.selectedIndex].value;
@@ -168,11 +156,18 @@ function salvar(){
     	aRespostas.push(oResposta);
     }
 
-    /*if (data == 25) {
+    //if (data == 25) {
     	for (var i = 11; i <= 15; i++) {
+
 	    	var oResposta = new Object();
-	    	var obj 	  = document.getElementById('questao_'+i).checked;
-	    	var resposta  = obj.value;
+	    	var objs	  = document.getElementsByName('questao_'+i);
+			
+			for(var j = 0; j < objs.length; j++){
+			    if(objs[j].checked){
+			        var resposta = objs[j].value;
+			        break;
+			    }
+			}
 
 	    	oResposta.questao  = i;
 	    	oResposta.resposta = resposta;
@@ -183,12 +178,23 @@ function salvar(){
 
     var oParams = new Object();
   	oParams.method = 'salvarQuestionario';
-  	oParams.id_usuario = readCookie('id_usuario');
+  	oParams.id_usuario = readSession('id_usuario');
   	oParams.data  	   = data_form;
   	oParams.aRespostas = JSON.stringify(aRespostas);
 
-	AJAXRequest("POST", oParams, "teste");
+	AJAXRequest("POST", oParams, "completaSalvar");
 
+}
+
+function completaSalvar(oAjax) {
+	
+	if (oAjax.status == 1) {
+		alert("Houve um erro ao salvar as respostas. Tente novamente.");
+		return false;
+	} else {
+		alert("Respostas gravadas com sucesso.");
+		return true;
+	}
 }
 
 function getRespostas() {
@@ -197,7 +203,7 @@ function getRespostas() {
 
 	var oParams    = new Object();
 	oParams.method = 'getQuestionarioPessoaData';
-	oParams.id_usuario = readCookie('id_usuario');
+	oParams.id_usuario = readSession('id_usuario');
   	oParams.data  	   = data_form;
 
   	AJAXRequest("POST", oParams, "completaRespostas");
@@ -206,11 +212,25 @@ function getRespostas() {
 function completaRespostas(oAjax) {
 
 	if (oAjax.status == 1) {
+
 		alert("Não há respostas para esta data.");
 		return false;
 	} else {
 
-		alert("ok");
+		oAjax.respostas.forEach(function(resposta, index){
+
+			var obj = document.getElementsByName('questao_'+resposta.questao)[0];
+
+			if(obj.tagName == 'INPUT') {
+
+				var objChecked = document.getElementById(obj.name+'_'+resposta.resposta);
+				objChecked.checked = true;
+			} else if (obj.tagName == 'SELECT') {
+
+				obj.value = resposta.resposta;
+				obj.disabled = true;
+			}
+		});
 	}
 	return false;
 }

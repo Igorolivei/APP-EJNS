@@ -64,8 +64,10 @@
   <access origin="http://127.0.0.1*"/>
   <access origin=".*"/>
   <access origin="localhost:4343" />
+  <access origin="192.168.0.4*" />
   <plugin name="cordova-plugin-whitelist" version="1"/>
   <allow-navigation href="localhost:4343"/>
+  <allow-navigation href="192.168.0.4"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>

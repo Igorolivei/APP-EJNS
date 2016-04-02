@@ -1,12 +1,16 @@
 <!DOCTIPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,
+width=device-width, height=device-height, target-densitydpi=device-dpi" />
 	<head>
 	  <title>
 	    PPV - EJNS
 	  </title>
+	  <script type="text/javascript" src="cordova.js"></script>
 	  <script src="js/sessionCookie.js" type="text/javascript"></script>
   	<script src="js/js_utils.js" type="text/javascript"></script>
+  	<script src="js/index.js" type="text/javascript"></script>
 	</head>
 	<!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -26,7 +30,7 @@
 
 window.onload = function() {
   if (readCookie('id_usuario') && readCookie('id_usuario') !== 0) {
-  	
+
   	window.location.href = "seleciona_tela.html";
   }
 }
@@ -58,15 +62,15 @@ function concluiAutenticacao(oAjax) {
 
   	with (obj.usuario) {
   		//os dados de uma sessão de login (cookies) duram uma semana
-			writeCookie('id_usuario', id_usuario, 7);
-			writeCookie('nome', nome, 7);
-			writeCookie('data_nasc', data_nasc, 7);
-			writeCookie('id_tipousuario', id_tipousuario, 7);
-			writeCookie('tipo_usuario', tipo_usuario, 7);
-			writeCookie('responde', perm_responde, 7);
-			writeCookie('le_respostas', perm_le_resposta, 7);
-			writeCookie('equipe', nome_equipe, 7);
-			writeCookie('setor', setor, 7);
+			writeSession('id_usuario', id_usuario);
+			writeSession('nome', nome);
+			writeSession('data_nasc', data_nasc);
+			writeSession('id_tipousuario', id_tipousuario);
+			writeSession('tipo_usuario', tipo_usuario);
+			writeSession('responde', perm_responde);
+			writeSession('le_respostas', perm_le_resposta);
+			writeSession('equipe', nome_equipe);
+			writeSession('setor', setor);
   	}
   	window.location.href = "seleciona_tela.html";
   } else {

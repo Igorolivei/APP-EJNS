@@ -31,9 +31,9 @@
   }
   function valida_permissao() {
   	
-  	readCookie('responde');
-	readCookie('le_respostas');
-  	document.getElementById('btn_equipista').style.visibility = readCookie('responde') == 1 ? 'visible' : 'hidden';
-  	document.getElementById('btn_lider').style.visibility = readCookie('le_respostas') ? 'visible' : 'hidden';
+  	readSession('responde');
+	readSession('le_respostas');
+  	document.getElementById('btn_equipista').style.visibility = readSession('responde') == 1 ? 'visible' : 'hidden';
+  	document.getElementById('btn_lider').style.visibility = readSession('le_respostas') ? 'visible' : 'hidden';
   }
 </script>

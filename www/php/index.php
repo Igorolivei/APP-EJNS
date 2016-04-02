@@ -32,9 +32,12 @@ switch ($oParams->method) {
 					INNER JOIN equipe  e on e.id_equipe  = u.id_equipe
 					INNER JOIN setor   s on s.id_setor   = e.id_setor
 					INNER JOIN tipo_usuario tu on tu.id_tipousuario = u.id_tipousuario
-				WHERE ul.login = '".$oParams->login."' and ul.senha = '".md5($oParams->senha)."' LIMIT 1";
+				WHERE ul.login = :l and ul.senha = :s LIMIT 1";
+		$resultLogin = $pdo->prepare($sql);
+		$resultLogin->bindParam(':l', strtolower($oParams->login));
+		$resultLogin->bindParam(':s', md5($oParams->senha));
+		$resultLogin->execute();
 
-		$resultLogin = $pdo->query($sql);
 		$row = $resultLogin->fetch();
 
 		if (!empty($row)) {
@@ -133,13 +136,13 @@ switch ($oParams->method) {
 				 	questao,
 				 	resposta
 				FROM usuario_questionario 
-				WHERE id_usuario = $id_usuario and 
-					  data = $data";
+				WHERE id_usuario    = $idUsuario and 
+					  data_resposta = '$data'";
 
 		$resultQuestionario = $pdo->query($sql);
+		
+		if ($resultQuestionario->fetch(PDO::FETCH_NUM) > 0) {
 
-		if ($result) {
-			
 			$aRespostas = Array();
 			while ($row = $resultQuestionario->fetch()) 
 			{
@@ -147,10 +150,12 @@ switch ($oParams->method) {
 				$resposta->questao  = $row['questao'];
 				$resposta->resposta = $row['resposta'];
 			 	$aRespostas[] = $resposta; 
+
 			}
 
 			$oRetorno->respostas = $aRespostas;
 		} else {
+
 			$oRetorno->status = 1;
 		}
 

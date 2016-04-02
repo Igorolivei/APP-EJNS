@@ -1,3 +1,5 @@
+/* SESSION COM COOKIES */
+
 function writeCookie(name,value,days) {
     var date, expires;
     if (days) {
@@ -22,5 +24,32 @@ function readCookie(name) {
             return c.substring(nameEQ.length,c.length);
         }
     }
+}
+
+/* SESSION COM LOCALSTORAGE */
+
+function writeSession(name, value) {
+    window.localStorage.setItem(name, value);
+}
+
+function readSession(name) {
+    var item = window.localStorage.getItem(name);
+    if (item !== 0) {
+        return item;
+    }
     return '';
+}
+
+function removeSession(name) {
+    var item = window.localStorage.getItem(name);
+    if (item !== 0) {
+        window.localStorage.removeItem(name);
+        return true;
+    }
+    return false;
+}
+
+function clearSession() {
+    window.localStorage.clear();
+    return false;
 }
