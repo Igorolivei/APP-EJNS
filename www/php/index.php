@@ -12,7 +12,6 @@ $oRetorno->status = 0;
 $method = "getSetores";
 
 switch ($oParams->method) {
-	
 	//try {
 	//LOGIN
 	case 'autenticar':
@@ -167,6 +166,7 @@ switch ($oParams->method) {
 		$aRespostas = json_decode($oParams->aRespostas);
 		$idUsuario  = $oParams->id_usuario;
 		$data 		= $oParams->data;
+		
 		foreach ($aRespostas as $oResposta) {
 			$questao  = $oResposta->questao;
 			$resposta = $oResposta->resposta;

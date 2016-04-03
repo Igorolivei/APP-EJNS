@@ -93,7 +93,8 @@
 				  </select>					
 			</fieldset>
 		</div>
-		<div id="questionario_especial">
+		<br>
+		<div id="questionario_mensal">
 			<fieldset>
 				<legend>Mensal</legend>
 				<p id="q11" class="questao">Você participou da missa mensal?</p> <br>
@@ -135,14 +136,20 @@
 <script language="JavaScript">
 window.onload = function() {
   document.getElementById('dataFiltro').value = dateToBR(getToday());
+  //VERIFICAR
+  var dataHoje = getToday().getDate()+1;
+  
+  if (dataHoje != 25) {
+  	//document.getElementById('questionario_mensal').style.visibility = 'hidden';
+  	document.getElementById('questionario_mensal').style.display = 'none';
+  }
 }
-
-document.getElementById("btn_salvar").addEventListener("click", salvar, false);
 
 function salvar(){
 
   	var data_form  = dateToEN(document.getElementById('dataFiltro').value);
   	var aRespostas = new Array();
+  	var dataHoje = getToday().getDate();
 
     for (var i = 1; i <= 10; i++) {
 
@@ -156,8 +163,9 @@ function salvar(){
     	aRespostas.push(oResposta);
     }
 
-    //if (data == 25) {
-    	for (var i = 11; i <= 15; i++) {
+    if (document.getElementById('questionario_mensal').style.display != 'none') {
+    	
+    	for (var i = 11; i <= 16; i++) {
 
 	    	var oResposta = new Object();
 	    	var objs	  = document.getElementsByName('questao_'+i);
@@ -174,7 +182,7 @@ function salvar(){
 
 	    	aRespostas.push(oResposta);
     	}
-    //}*/    
+    }    
 
     var oParams = new Object();
   	oParams.method = 'salvarQuestionario';
@@ -214,6 +222,7 @@ function completaRespostas(oAjax) {
 	if (oAjax.status == 1) {
 
 		alert("Não há respostas para esta data.");
+		ativaDesativaRespostas(false);
 		return false;
 	} else {
 
@@ -228,10 +237,31 @@ function completaRespostas(oAjax) {
 			} else if (obj.tagName == 'SELECT') {
 
 				obj.value = resposta.resposta;
-				obj.disabled = true;
+				
 			}
 		});
+		ativaDesativaRespostas(true);
 	}
-	return false;
+	return true;
+}
+
+//se receber TRUE, DESATIVA todos os elementos de resposta, se for FALSE, ATIVA
+function ativaDesativaRespostas(ativado) {
+	var inputs  = document.getElementsByTagName('INPUT');
+	var aInputs = [].slice.call(inputs);
+
+	aInputs.forEach(function(element, index){
+		if(element.type == 'radio' || element.type == 'button') {
+			element.disabled = ativado;
+		}
+	})
+	
+	var selects = document.getElementsByTagName('SELECT');
+	var aSelects = [].slice.call(selects);
+
+	aSelects.forEach(function(element, index){
+		element.disabled = ativado;
+	})
+
 }
 </script>
