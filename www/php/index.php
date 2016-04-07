@@ -5,7 +5,6 @@ include 'classes/stdObject.php';
 header("Access-Control-Allow-Origin: *");
 
 $oParams = json_decode($_GET['oParams']);
-//echo $_GET['oParams'];
 
 $oRetorno = new stdObject();
 $oRetorno->status = 0;
@@ -16,6 +15,8 @@ switch ($oParams->method) {
 	//LOGIN
 	case 'autenticar':
 
+		$login = strtolower($oParams->login);
+		$senha = md5($oParams->senha);
 		$sql = "SELECT
 					u.id_usuario, 
 					u.nome as nome,
@@ -33,8 +34,8 @@ switch ($oParams->method) {
 					INNER JOIN tipo_usuario tu on tu.id_tipousuario = u.id_tipousuario
 				WHERE ul.login = :l and ul.senha = :s LIMIT 1";
 		$resultLogin = $pdo->prepare($sql);
-		$resultLogin->bindParam(':l', strtolower($oParams->login));
-		$resultLogin->bindParam(':s', md5($oParams->senha));
+		$resultLogin->bindParam(':l', $login);
+		$resultLogin->bindParam(':s', $senha);
 		$resultLogin->execute();
 
 		$row = $resultLogin->fetch();

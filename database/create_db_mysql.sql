@@ -58,8 +58,8 @@ CREATE TABLE usuario (
       ON UPDATE NO ACTION
 );
 
---INSERT INTO usuario (nome, data_nascimento, tipo_usuario, id_equipe, ativo) VALUES ('Jarbson', '1995-05-14', 1, 1, true);
---INSERT INTO usuario (nome, data_nascimento, tipo_usuario, id_equipe, ativo) VALUES ('Marise Guipson Vasconcelos', '1995-05-14', 3, 1, true);
+--INSERT INTO usuario (nome, data_nascimento, id_tipousuario, id_equipe, ativo) VALUES ('Jarbson', '1995-05-14', 1, 1, true);
+--INSERT INTO usuario (nome, data_nascimento, id_tipousuario, id_equipe, ativo) VALUES ('Marise Guipson Vasconcelos', '1995-05-14', 3, 1, true);
 
 CREATE TABLE usuario_login (
   id_usuariologin INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -73,8 +73,8 @@ CREATE TABLE usuario_login (
       ON UPDATE NO ACTION
 );
 
---INSERT INTO usuario_login (login, senha, id_usuario) VALUES ('jarbson', '123', 1);
---INSERT INTO usuario_login (login, senha, id_usuario) VALUES ('mahvasc', '123', 2);
+--INSERT INTO usuario_login (login, senha, id_usuario) VALUES ('jarbson', '202cb962ac59075b964b07152d234b70', 1);
+--INSERT INTO usuario_login (login, senha, id_usuario) VALUES ('mahvasc', '202cb962ac59075b964b07152d234b70', 2);
 
 CREATE TABLE usuario_questionario (
   id_usuarioquestionario INT UNSIGNED NOT NULL AUTO_INCREMENT,
