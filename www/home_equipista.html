@@ -7,7 +7,7 @@
 	<h2 class="titulo">PPV</h2>
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<label for="dataFiltro">Data: </label>
-	<input type="date" id="dataFiltro" onfocus="this.value='';" onblur="if (this.value == '') { this.value = dateToBR(getToday()); getRespostas() } else { getRespostas(); }"><br>
+	<input type="date" id="dataFiltro" onfocus="this.value='';" onchange="if (this.value == '') { this.value = dateToBR(getToday()); getRespostas(); } else { getRespostas(); }"><br>
 	<form id="questionario_ejns" onsubmit="return false;">
 		<div id="questionario_principal">
 			<fieldset>
@@ -134,6 +134,9 @@
   </body>
 </html>
 <script language="JavaScript">
+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
 window.onload = function() {
   document.getElementById('dataFiltro').value = dateToBR(getToday());
   //VERIFICAR
@@ -147,9 +150,15 @@ window.onload = function() {
 
 function salvar(){
 
-  	var data_form  = dateToEN(document.getElementById('dataFiltro').value);
+	if (isFirefox) {
+		
+		var data_form  = dateToEN(document.getElementById('dataFiltro').value);
+	} else {
+		
+		var data_form  = document.getElementById('dataFiltro').value;
+	}
   	var aRespostas = new Array();
-  	var dataHoje = getToday().getDate();
+  	var dataHoje = getToday().getDate()+1;
 
     for (var i = 1; i <= 10; i++) {
 
@@ -207,8 +216,13 @@ function completaSalvar(oAjax) {
 
 function getRespostas() {
 	
-	var data_form  = dateToEN(document.getElementById('dataFiltro').value);
-
+	if (isFirefox) {
+		
+		var data_form  = dateToEN(document.getElementById('dataFiltro').value);
+	} else {
+		
+		var data_form  = document.getElementById('dataFiltro').value;
+	}
 	var oParams    = new Object();
 	oParams.method = 'getQuestionarioPessoaData';
 	oParams.id_usuario = readSession('id_usuario');
@@ -221,8 +235,23 @@ function completaRespostas(oAjax) {
 
 	if (oAjax.status == 1) {
 
-		alert("Não há respostas para esta data.");
-		ativaDesativaRespostas(false);
+		var data_form = isFirefox ? new Date(dateToEN(document.getElementById('dataFiltro').value)) : new Date(document.getElementById('dataFiltro').value);
+		var diaForm = data_form.getDate()+1;
+		var diaHoje = getToday();//.getDate();
+
+		if(diaForm == 25) {
+			document.getElementById('questionario_mensal').style.display = 'block';
+		} else {
+			document.getElementById('questionario_mensal').style.display = 'none';
+		}
+
+		if (diffDays > 7) {
+    		alert("Você não respondeu o PPV desta data, mas não pode responder depois de uma semana.");
+    	    ativaDesativaRespostas(true);
+		} else {
+    		alert("Você ainda não respondeu o PPV desta data.");
+    	    ativaDesativaRespostas(false);
+	    }
 		return false;
 	} else {
 

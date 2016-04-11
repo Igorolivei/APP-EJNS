@@ -55,7 +55,7 @@ function getToday() {
 //recebe data no formato que vem do banco e retorna uma string no formato BR
 function dateToBR(date) {
 	var year  = date.getFullYear();
-  	var month = (1 + date.getMonth()).toString();
+  	var month = (date.getMonth()).toString();
   	var day   = date.getDate().toString();
 
   	month     = month.length > 1 ? month : '0'+month;
@@ -80,9 +80,8 @@ function AJAXRequest(method, oParams, onComplete){
 
   	var Ajax = new XMLHttpRequest();
   	
-    //Ajax.open(method, "http://localhost:4343/EJNS/index.php?oParams="+JSON.stringify(oParams), true);
-    Ajax.open(method, "http://192.168.0.5:4343/EJNS/index.php?oParams="+JSON.stringify(oParams), true);
-    //Ajax.open(method, "http://ejns-app.esy.es/index.php?oParams="+JSON.stringify(oParams), true);
+    Ajax.open(method, "http://192.168.0.5:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
+    //Ajax.open(method, "http://ppvejnsapp.com.br/control.php?oParams="+JSON.stringify(oParams), true);
     Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     Ajax.onreadystatechange = function () {

@@ -1,6 +1,8 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="js/sessionCookie.js" type="text/javascript"></script>
+  <script src="js/js_utils.js" type="text/javascript"></script>
   <body>
 	<p> Selecione o equipista e a data do questionário. </p>
 	
@@ -60,67 +62,128 @@
   </body>
 </html>
 <script language="JavaScript">
-  window.onload = function() {
-    document.getElementById('dataFiltro').value = new Date();//.getTime();
-    listaEquipistas();
-  }
-  //Buscar os equipistas e colocar no select
-  function listaEquipistas() {
-  	var select = document.getElementById('equipistas');
-  	var fragment = document.createDocumentFragment();
-  	var equipistas = ["Marise", "Luana"];
-	equipistas.forEach(function(equipista, index){
-		var opt = document.createElement("option");
-		opt.value = equipista;
-		opt.innerHTML = equipista;
-		fragment.appendChild(opt);
-	});
-	select.appendChild(fragment);
-  }
+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
+window.onload = function() {
+  //document.getElementById('dataFiltro').value = new Date();//.getTime();
+  listaEquipistas();
+}
+
+//Buscar os equipistas e colocar no select
+function listaEquipistas(){
+
+	if (isFirefox) {
+		
+		var data_form  = dateToEN(document.getElementById('dataFiltro').value);
+	} else {
+		
+		var data_form  = document.getElementById('dataFiltro').value;
+	}
+	var oParams    = new Object();
+	oParams.method = 'getUsuarioConselheiro';
+	oParams.id_conselheiro = readSession('id_usuario');
+
+	AJAXRequest("POST", oParams, "completaListaEquipistas");
+}
+
+
+function completaListaEquipistas(oAjax) {
+
+	if (oAjax.status == 1) {
+
+		alert("Erro ao listar os equipistas. Contate o administrador");
+		return false;
+	} else {
+
+	 	var select = document.getElementById('equipistas');
+	 	var fragment = document.createDocumentFragment();
+	 	var equipistas = oAjax.aEquipistas;
+
+		equipistas.forEach(function(equipista, index){
+			var opt = document.createElement("option");
+			opt.value = equipista.id_equipista;
+			opt.innerHTML = equipista.nome;
+			fragment.appendChild(opt);
+		});
+		select.appendChild(fragment);
+		return true;
+	}
+ }
+
+function getRespostas() {
+	
+	if (isFirefox) {
+		
+		var data_form  = dateToEN(document.getElementById('dataFiltro').value);
+	} else {
+		
+		var data_form  = document.getElementById('dataFiltro').value;
+	}
+	var oParams    = new Object();
+	oParams.method = 'getQuestionarioPessoaData';
+	oParams.id_usuario = document.getElementById('equipistas').value;
+  	oParams.data  	   = data_form;
+
+  	AJAXRequest("POST", oParams, "completaRespostas");
+}
+
+function completaRespostas(oAjax) {
+
+	if (oAjax.status == 1) {
+
+		alert("O equipista não respondeu neste dia.");
+		
+		return false;
+	} else {
+
+		oAjax.respostas.forEach(function(resposta, index){
+
+			var obj = document.getElementById('q'+resposta.questao+'_resposta');
+
+			if(resposta.questao < 11) {
+
+				switch(resposta.resposta){
+	  				case '1':
+	  					resposta = "Ótimo";
+	  				break;
+	  				case '2':
+	  					resposta = "Bom";
+	  				break;
+	  				case '3':
+	  					resposta = "Regular";
+	  				break;
+	  				case '4':
+	  					resposta = "Fraco";
+	  				break;
+	  				default:
+	  					resposta = "Não respondido";
+	  				break;
+  				} 
+  			} else {
+
+				switch(resposta.resposta){
+	  				case '1':
+	  					resposta = "Sim";
+	  				break;
+	  				case '2':
+	  					resposta = "Não";
+	  				break;
+	  				default:
+	  					resposta = "Não respondido";
+	  				break;
+	  			}
+				
+			}
+			obj.innerHTML = resposta;
+		});
+	}
+	return true;
+}
 
   function preencheDadosEquipista() {
-  	/*var objJSON = "{'nome': 'Marise', 'aQuestoes': {1: 1, 2: 4, 3: 2, 4: 1, 5: 1}}, {'nome': 'Luana', 'aQuestoes': {1: 1, 2: 2, 3: 4, 4: 1, 5: 2}}"
-
-  	var objDecoded = (eval('('+objJSON+')'));
-  	console.log(objDecoded);*/
-
-  	var nome = document.getElementById('equipistas').value;
-  	var respostas = [1, 2, 3, 3, 1, 2, 2, 4, 1, 4, 1, 2, 2, 2, 1, 1]
-  	document.getElementById('nome_equipista').innerHTML = nome;
-  	for (var i = 1; i <= respostas.length; i++) {
-  		var resposta = "-";
-  		if (i < 11){
-  			switch(respostas[i]){
-  				case 1:
-  					resposta = "Ótimo";
-  				break;
-  				case 2:
-  					resposta = "Bom";
-  				break;
-  				case 3:
-  					resposta = "Regular";
-  				break;
-  				case 4:
-  					resposta = "Fraco";
-  				break;
-  				default:
-  					resposta = "Não respondido";
-  				break;
-  			}
-  		} else {
-			switch(respostas[i]){
-  				case 1:
-  					resposta = "Sim";
-  				break;
-  				case 2:
-  					resposta = "Não";
-  				break;
-  				default:
-  					resposta = "Não respondido";
-  				break;
-  			}
-  		}
-  		document.getElementById('q'+i+'_resposta').innerHTML = resposta;
-  	}
+  	
+  	var nome = document.getElementById('equipistas').innerHTML;
+  	getRespostas();
   }
 </script>

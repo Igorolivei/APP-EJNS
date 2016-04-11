@@ -5,10 +5,8 @@ include 'classes/stdObject.php';
 header("Access-Control-Allow-Origin: *");
 
 $oParams = json_decode($_GET['oParams']);
-
 $oRetorno = new stdObject();
 $oRetorno->status = 0;
-$method = "getSetores";
 
 switch ($oParams->method) {
 	//try {
@@ -76,7 +74,7 @@ switch ($oParams->method) {
 		 	$aSetores[] = $setor; 
 		}
 
-		$oRetorno->setores = $aSetores;
+		$oRetorno->aSetores = $aSetores;
 
 		echo json_encode($oRetorno);
 	break;
@@ -96,19 +94,53 @@ switch ($oParams->method) {
 			$setor->descricao = $row['descr'];
 		 	$aSetores[] = $setor; 
 		}
-		echo json_encode($aSetores);
-		//print_r($aSetores);
+		$oRetorno->aSetores = $aSetores;
+
+		echo json_encode($oRetorno);
 	break;
 
 	//EQUIPE
 
 
 	//USUARIO
-	case 'getLiderUsuario':
+	case 'getConselheiroUsuario':
 	
 	break;
 	
-	case 'getLiderEquipe':
+	case 'getUsuarioConselheiro':
+	
+		$id_conselheiro = $oParams->id_conselheiro;
+
+		$sql = "SELECT 
+				u.id_usuario, 
+				u.nome, 
+				tu.id_tipousuario, 
+				tu.descricao as descricao_tipousuario, 
+				e.id_equipe, 
+				e.descr as nome_equipe
+				FROM usuario u
+		   			INNER JOIN equipe e ON e.id_equipe = u.id_equipe
+		   			INNER JOIN tipo_usuario tu ON tu.id_tipousuario = u.id_tipousuario
+				WHERE tu.id_tipousuario <> 1 
+					and e.id_equipe in (select id_equipe from usuario where id_usuario = $id_conselheiro)";
+
+		$resultEquipistas = $pdo->query($sql);
+		$aEquipistas = Array();
+		while ($row = $resultEquipistas->fetch()) 
+		{
+			$equipista = new stdObject();
+			$equipista->id_equipista = $row['id_usuario'];
+			$equipista->nome = $row['nome'];
+			$equipista->id_tipousuario = $row['id_tipousuario'];
+			$equipista->tipo_usuario =  $row['descricao_tipousuario'];
+		 	$aEquipistas[] = $equipista; 
+		}
+		$oRetorno->aEquipistas = $aEquipistas;
+
+		echo json_encode($oRetorno);
+	break;
+
+	case 'getConselheiroEquipe':
 	
 	break;
 	
@@ -119,10 +151,26 @@ switch ($oParams->method) {
 	case 'setViceEquipe':
 
 	break;
+
 	
 	//TIPO USUARIO
 	case 'getTipoUsuario':
 
+		$sql = "SELECT * FROM tipo_usuario";
+		$resultTipoUsuario = $pdo->query($sql);
+		$aTipoUsuario = Array();
+		while ($row = $resultTipoUsuario->fetch()) 
+		{
+			$tipoUsuario = new stdObject();
+			$tipoUsuario->id_tipousuario = $row['id_tipousuario'];
+			$tipoUsuario->descricao      = $row['descricao'];
+			$tipoUsuario->le_respostas   = $row['le_respostas'];
+			$tipo_usuario->responde 	 = $row['responde'];
+		 	$aTipoUsuario[] = $tipoUsuario; 
+		}
+		$oRetorno->aTipoUsuario = $aTipoUsuario;
+
+		echo json_encode($oRetorno);
 	break;
 
 	//QUESTIONARIO
@@ -196,7 +244,8 @@ switch ($oParams->method) {
 	//DEFAULT - Não definido
 	default:
 
-		throw new Exception("Erro ao buscar as informações. Contate o administrador.", 1);
+		echo "Erro ao buscar as informações. Contate o administrador.";
+		//throw new Exception("Erro ao buscar as informações. Contate o administrador.", 1);
 	break;
 	
 	/*} catch (Exception $e) {
