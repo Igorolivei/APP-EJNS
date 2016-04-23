@@ -188,19 +188,22 @@ switch ($oParams->method) {
 					  data_resposta = '$data'";
 
 		$resultQuestionario = $pdo->query($sql);
+
+		$aResultadoQuestionario = array();
+		$aResultadoQuestionario = $resultQuestionario->fetchAll();
 		
-		if ($resultQuestionario->fetch(PDO::FETCH_NUM) > 0) {
+		if (!empty($aResultadoQuestionario)) {
 
 			$aRespostas = Array();
-			while ($row = $resultQuestionario->fetch()) 
-			{
+			
+			foreach ($aResultadoQuestionario as $row) {
+				
 				$resposta = new stdObject();
 				$resposta->questao  = $row['questao'];
 				$resposta->resposta = $row['resposta'];
 			 	$aRespostas[] = $resposta; 
-
 			}
-
+			
 			$oRetorno->respostas = $aRespostas;
 		} else {
 
@@ -239,6 +242,15 @@ switch ($oParams->method) {
 
 	case 'cadastraAviso':
 
+	break;
+
+	//EMAIL
+
+	case 'enviarUsuarioPorEmail':
+		$email = $oParams->email;
+		$subject = "PPV de ".$nome_equipista.".";
+		$message = "Teste";
+		mail($email, $subject, $message);
 	break;
 
 	//DEFAULT - Não definido

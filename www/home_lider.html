@@ -11,8 +11,7 @@
 	</select><br><br>
 
 	<label for="dataFiltro">Data: </label>
-	<input type="date" id="dataFiltro" onchange="alert(document.getElementById('dataFiltro').value);"><br>
-	
+	<input type="date" id="dataFiltro" onfocus="this.value='';" onchange="if (this.value == '') { this.value = dateToBR(getToday()); getRespostas(); } else { getRespostas(); }"><br>
 	<h2 id="nome_equipista">Selecione um equipista</h2>
 	<form id="questionario_ejns" onsubmit="return false;">
 		<div id="questionario_principal">
