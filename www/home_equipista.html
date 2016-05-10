@@ -4,6 +4,11 @@
   <script src="js/sessionCookie.js" type="text/javascript"></script>
   <script src="js/js_utils.js" type="text/javascript"></script>
   <body>
+  	<ul>
+	  <li><a class="active" href="home_equipista.html">Home</a></li>
+	  <li><a href=""></a></li>
+	  <li><a href="alterar_senha.html">Alterar Senha</a></li>
+	</ul>
 	<h2 class="titulo">PPV</h2>
 	<p> Responda o questionário abaixo ou altere a data para visualizar respostas de um dia anterior. </p>
 	<label for="dataFiltro">Data: </label>
@@ -139,8 +144,8 @@ var isFirefox = typeof InstallTrigger !== 'undefined';
 
 window.onload = function() {
   document.getElementById('dataFiltro').value = dateToBR(getToday());
-  //VERIFICAR
-  var dataHoje = getToday().getDate()+1;
+  
+  var dataHoje = getToday().getUTCDate();
   
   if (dataHoje != 25) {
   	//document.getElementById('questionario_mensal').style.visibility = 'hidden';
@@ -237,17 +242,20 @@ function completaRespostas(oAjax) {
 	if (oAjax.status == 1) {
 
 		var data_form = isFirefox ? new Date(dateToEN(document.getElementById('dataFiltro').value)) : new Date(document.getElementById('dataFiltro').value);
-		var diaForm = data_form.getDate()+1;
-		var diaHoje = getToday();//.getDate();
+		var diaForm = data_form.getUTCDate();
+		var diaHoje = getToday().getUTCDate();
+		alert(diaHoje);
 
 		if(diaForm == 25) {
+
 			document.getElementById('questionario_mensal').style.display = 'block';
 		} else {
+
 			document.getElementById('questionario_mensal').style.display = 'none';
 		}
 
-		if (diffDays > 7) {
-    		alert("Você não respondeu o PPV desta data, mas não pode responder depois de uma semana.");
+		if ((data_form.getMonth() != getToday().getMonth()) || (diaHoje - diaForm > 7)) {
+    		alert("Você não respondeu o PPV desta data, mas não pode responder depois de uma semana ou no mês seguinte.");
     	    ativaDesativaRespostas(true);
 		} else {
     		alert("Você ainda não respondeu o PPV desta data.");

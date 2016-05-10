@@ -1,0 +1,52 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="js/sessionCookie.js" type="text/javascript"></script>
+  <script src="js/js_utils.js" type="text/javascript"></script>
+  <body>
+  	<ul>
+	  <li><a class="active" href="home_equipista.html">Início</a></li>
+	  <li><a href="novo_usuario.html">Novo Usuário</a></li>
+	  <li><a href="alterar_senha.html">Alterar Senha</a></li>
+	</ul>
+	<form id="altera_senha" onsubmit="return false;">
+		<div id="campos_senha">
+			<fieldset>
+			<legend>Alterar Senha</legend>
+				<p>Senha Atual:</p><br>
+				<input type="password" id="senha_atual" onkeyup="confirmaSenhaAtual();"/><br>
+	    		<p id="erro_senha_atual" style="display: none" class="erro">A senha digitada deve ser a atual</p><br>
+				<p>Nova Senha:</p><br>
+				<input type="password" id="nova_senha" /><br>
+				<p>Confirme:</p><br>
+				<input type="password" id="nova_senha_confirma" onkeyup="confirmaNovaSenha();" /><br>
+	    		<p id="erro_nova_senha" style="display: none" class="erro">A senha digitada deve ser igual à anterior</p>
+			</fieldset>
+		</div>
+	<input id="btnAlterar" type="button" value="Alterar Senha" onchange="alterarSenha();" />
+	</form>
+  </body>
+</html>
+<script type="text/javascript">
+
+	function confirmaNovaSenha() {
+		var nova_senha = document.getElementById('nova_senha').value;
+		var confirma_senha = document.getElementById('nova_senha_confirma').value;
+
+		if (nova_senha != confirma_senha) {
+			document.getElementById('erro_nova_senha').style.display = 'block';
+			document.getElementById('btnAlterar').disabled = true;
+		} else {
+			document.getElementById('erro_nova_senha').style.display = 'none';
+			document.getElementById('btnAlterar').disabled = false;
+		}
+	}
+
+	function confirmaSenhaAtual() {
+
+	}
+
+	function retornoSenhaAtual(oAjax) {
+
+	}
+</script>
