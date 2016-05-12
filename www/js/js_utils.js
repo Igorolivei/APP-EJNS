@@ -80,8 +80,8 @@ function AJAXRequest(method, oParams, onComplete){
 
   	var Ajax = new XMLHttpRequest();
   	
-    //Ajax.open(method, "http://192.168.0.5:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
-    Ajax.open(method, "http://ppvejnsapp.com.br/control.php?oParams="+JSON.stringify(oParams), true);
+    Ajax.open(method, "http://192.168.0.5:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
+    //Ajax.open(method, "http://ppvejnsapp.com.br/control.php?oParams="+JSON.stringify(oParams), true);
     Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     Ajax.onreadystatechange = function () {

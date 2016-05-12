@@ -15,15 +15,15 @@
 			<legend>Alterar Senha</legend>
 				<p>Senha Atual:</p><br>
 				<input type="password" id="senha_atual" onkeyup="confirmaSenhaAtual();"/><br>
-	    		<p id="erro_senha_atual" style="display: none" class="erro">A senha digitada deve ser a atual</p><br>
+	    		<p id="erro_senha_atual" style="display: none" class="erro">A senha digitada diverge da senha atual</p><br>
 				<p>Nova Senha:</p><br>
-				<input type="password" id="nova_senha" /><br>
+				<input type="password" id="nova_senha" onkeyup="confirmaNovaSenha();" /><br>
 				<p>Confirme:</p><br>
 				<input type="password" id="nova_senha_confirma" onkeyup="confirmaNovaSenha();" /><br>
 	    		<p id="erro_nova_senha" style="display: none" class="erro">A senha digitada deve ser igual à anterior</p>
 			</fieldset>
 		</div>
-	<input id="btnAlterar" type="button" value="Alterar Senha" onchange="alterarSenha();" />
+	<input id="btnAlterar" type="button" value="Alterar Senha" onclick="alterarSenha();" />
 	</form>
   </body>
 </html>
@@ -44,9 +44,60 @@
 
 	function confirmaSenhaAtual() {
 
+		var oParams    = new Object();
+		oParams.method = 'comparaSenhaAtual';
+		oParams.id_usuario = readSession('id_usuario');
+		oParams.senha  = document.getElementById('senha_atual').value;
+	
+		AJAXRequest("POST", oParams, "retornoSenhaAtual");
 	}
 
 	function retornoSenhaAtual(oAjax) {
 
+		if (oAjax.status == 1) {
+
+			alert(oAjax.msg);
+			return false;
+		} else {
+
+	 		if (oAjax.existe_senha) {
+                document.getElementById('erro_senha_atual').style.display = 'none';
+                document.getElementById('btnAlterar').disabled = false;
+            } else {
+                document.getElementById('erro_senha_atual').style.display = 'block';
+                document.getElementById('btnAlterar').disabled = true;
+            }
+		}
+	}
+
+	function alterarSenha() {
+
+        var senha_atual    = document.getElementById('senha_atual').value;
+        var senha_nova     = document.getElementById('nova_senha').value;
+        var confirma_senha = document.getElementById('nova_senha_confirma').value;
+
+        if ((!senha_atual || senha_atual == "") || (!senha_nova || senha_nova == "") || (!confirma_senha || confirma_senha == "")) {
+            alert("Todos os campos devem ser preenchidos");
+            return false;
+        }
+
+        var oParams    = new Object();
+        oParams.method = 'alteraSenha';
+        oParams.id_usuario  = readSession('id_usuario');
+        oParams.senha_atual = senha_atual;
+        oParams.senha_nova  = senha_nova;
+    
+        AJAXRequest("POST", oParams, "retornoAlteraSenha");
+	}
+
+	function retornoAlteraSenha(oAjax) {
+
+        alert(oAjax.msg);
+        if (oAjax.status == 0) {
+
+            window.location.href = "seleciona_tela.html";
+            return true;
+        }
+        return false;
 	}
 </script>

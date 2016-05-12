@@ -59,6 +59,63 @@ switch ($oParams->method) {
 		echo json_encode($oRetorno);
 	break;
 
+	case 'comparaSenhaAtual':
+
+		$usuario = $oParams->id_usuario;
+		$senha   = md5($oParams->senha);
+		$sql = "SELECT exists(
+					SELECT 1 FROM usuario_login ul 
+					WHERE ul.id_usuario = :u and ul.senha = :s)
+				  AS existe";
+		$resultSenha = $pdo->prepare($sql);
+		$resultSenha->bindParam(':u', $usuario);
+		$resultSenha->bindParam(':s', $senha);
+		$resultSenha->execute();
+
+		$row = $resultSenha->fetch();
+
+		if (!empty($row)) {
+
+			if ($row['existe']) {
+
+				$oRetorno->existe_senha = true;
+			} else {
+
+				$oRetorno->existe_senha = false;
+			}
+		} else {
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Usuário não encontrado";
+		}
+
+		echo json_encode($oRetorno);
+	break;
+
+	case 'alteraSenha':
+
+		$usuario    = $oParams->id_usuario;
+		$senha_nova = md5($oParams->senha_nova);
+		$senha_atual = md5($oParams->senha_atual);
+		$sql = "UPDATE usuario_login SET senha = :sn WHERE id_usuario = :u AND senha = :sa";
+
+		$updateSenha = $pdo->prepare($sql);
+		$updateSenha->bindParam(':u', $usuario);
+		$updateSenha->bindParam(':sn', $senha_nova);
+		$updateSenha->bindParam(':sa', $senha_atual);
+		$status = $updateSenha->execute();
+
+		if ($status) {
+
+			$oRetorno->msg = "Senha alterada com sucesso";
+		} else {
+
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Erro ao alterar senha. Contate o administrador.";
+		}
+
+		echo json_encode($oRetorno);
+	break;
+
 	//SETOR
 	case 'getSetores':
 		
