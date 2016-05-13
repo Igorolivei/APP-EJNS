@@ -23,6 +23,7 @@ switch ($oParams->method) {
 					tu.descricao      as tipo_usuario,
 					tu.responde,
 					tu.le_respostas,
+					e.id_equipe,
 					e.descr as equipe,
 					s.descr as setor
 				FROM usuario_login ul
@@ -47,6 +48,7 @@ switch ($oParams->method) {
 			$oUsuario->tipo_usuario     = $row['tipo_usuario'];
 			$oUsuario->perm_responde    = $row['responde'];
 			$oUsuario->perm_le_resposta = $row['le_respostas'];
+			$oUsuario->id_equipe	    = $row['id_equipe'];
 			$oUsuario->nome_equipe      = $row['equipe'];
 			$oUsuario->setor            = $row['setor'];
 
@@ -160,6 +162,77 @@ switch ($oParams->method) {
 
 
 	//USUARIO
+	case 'validaLogin':
+
+		$login = $oParams->login;
+		$sql = "SELECT exists(
+					SELECT 1 FROM usuario_login ul 
+					WHERE ul.login = :l)
+				  AS existe";
+		$resultLogin = $pdo->prepare($sql);
+		$resultLogin->bindParam(':l', $login);
+		$resultLogin->execute();
+
+		$row = $resultLogin->fetch();
+
+		if (!empty($row)) {
+
+			if ($row['existe']) {
+
+				$oRetorno->existe_login = true;
+			} else {
+
+				$oRetorno->existe_login = false;
+			}
+		} else {
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Usuário não encontrado";
+		}
+
+		echo json_encode($oRetorno);
+	break;
+
+	case 'salvarUsuario':
+
+		$nome      = $oParams->nome_usuario;
+		$login     = $oParams->login_usuario;
+		$data_nasc = $oParams->data_nasc;
+		$equipe    = $oParams->equipe;
+		$tipo_usuario = $oParams->tipo_usuario;
+
+		$sql = "INSERT INTO usuario (nome, data_nascimento, id_tipousuario, id_equipe, ativo) VALUES (:n, :d, :tu, :e, 1)";
+
+		$salvaUsuario = $pdo->prepare($sql);
+		$salvaUsuario->bindParam(':n' , $nome);
+		$salvaUsuario->bindParam(':d' , $data_nasc);
+		$salvaUsuario->bindParam(':tu', $tipo_usuario);
+		$salvaUsuario->bindParam(':e' , $equipe);
+		$status_usuario = $salvaUsuario->execute();
+
+		if ($status_usuario) {
+
+			$senha = '202cb962ac59075b964b07152d234b70';
+			$sql_login = "INSERT INTO usuario_login (login, senha, id_usuario) VALUES (:l, :s, (SELECT max(id_usuario) FROM usuario))";
+			$salvaLogin = $pdo->prepare($sql_login);
+			$salvaLogin->bindParam(':l' , $login);
+			$salvaLogin->bindParam(':s' , $senha);
+			$status_login = $salvaLogin->execute();
+			
+			if ($status_login) {
+				$oRetorno->msg = "Usuário salvo.";
+			} else {
+				$oRetorno->status = 1;
+				$oRetorno->msg = "O usuário foi salvo, mas não foi possível criar o login. Contate o administrador.";
+			}
+		} else {
+
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Erro ao salvar o usuário. Contate o administrador.";
+		}
+
+		echo json_encode($oRetorno);
+	break;
+
 	case 'getConselheiroUsuario':
 	
 	break;
@@ -222,7 +295,7 @@ switch ($oParams->method) {
 			$tipoUsuario->id_tipousuario = $row['id_tipousuario'];
 			$tipoUsuario->descricao      = $row['descricao'];
 			$tipoUsuario->le_respostas   = $row['le_respostas'];
-			$tipo_usuario->responde 	 = $row['responde'];
+			$tipoUsuario->responde 	 = $row['responde'];
 		 	$aTipoUsuario[] = $tipoUsuario; 
 		}
 		$oRetorno->aTipoUsuario = $aTipoUsuario;

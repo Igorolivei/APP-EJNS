@@ -29,7 +29,7 @@ width=device-width, height=device-height, target-densitydpi=device-dpi" />
 <script language="JavaScript">
 
 window.onload = function() {
-  if (readCookie('id_usuario') && readCookie('id_usuario') !== 0) {
+  if (readSession('id_usuario') && readSession('id_usuario') !== 0) {
 
   	window.location.href = "seleciona_tela.html";
   }
@@ -61,7 +61,7 @@ function concluiAutenticacao(oAjax) {
   if (obj.status == 0) {
 
   	with (obj.usuario) {
-  		//os dados de uma sessão de login (cookies) duram uma semana
+  		
 			writeSession('id_usuario', id_usuario);
 			writeSession('nome', nome);
 			writeSession('data_nasc', data_nasc);
@@ -69,6 +69,7 @@ function concluiAutenticacao(oAjax) {
 			writeSession('tipo_usuario', tipo_usuario);
 			writeSession('responde', perm_responde);
 			writeSession('le_respostas', perm_le_resposta);
+			writeSession('id_equipe', id_equipe);
 			writeSession('equipe', nome_equipe);
 			writeSession('setor', setor);
   	}

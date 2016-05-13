@@ -53,3 +53,10 @@ function clearSession() {
     window.localStorage.clear();
     return false;
 }
+
+//sair e encessar a sessão
+function js_sair() {
+
+    clearSession();
+    window.location.href = "index.html";
+}

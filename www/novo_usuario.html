@@ -1,0 +1,140 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="js/sessionCookie.js" type="text/javascript"></script>
+  <script src="js/js_utils.js" type="text/javascript"></script>
+  <body>
+  	<ul>
+	  <li><a class="active" href="seleciona_tela.html">Início</a></li>
+	  <li><a href="avisos.html">Avisos</a></li>
+	  <li><a href="alterar_senha.html">Alterar Senha</a></li>
+	  <li><a onclick="js_sair();">Sair</a></li>
+	</ul>
+	<form id="altera_senha" onsubmit="return false;">
+		<div id="campos_senha">
+			<fieldset>
+			<legend>Cadastro de Usuário:</legend>
+				<p>Nome:</p><br>
+				<input type="text" id="nome_usuario" /><br>
+				<p>Login:</p><br>
+				<input type="text" id="login" onkeyup="validarLogin();" /><br>
+	    		<p id="erro_login" style="display: none" class="erro">Login já em uso</p><br>
+	    		<p id="correto_login" style="display: none" class="correto">Login disponível</p><br>
+	    		<p>Data de Nascimento:</p><br>
+	    		<input type="date" id="data_nasc" onfocus="this.value='';" onchange="if (this.value == '') { this.value = dateToBR(getToday()); } "><br>
+				<p>Tipo do Usuário:</p><br>
+				<select id="tipo_usuario">
+					<option value="Nenhum">Nenhum</option>
+				</select><br><br>
+	    		<p id="aviso"><strong>Atenção: A senha padrão é "123". O usuário pode alterar a qualquer momento no menu "Alterar senha".</strong></p>
+			</fieldset>
+		</div>
+	<input id="btnSalvar" type="button" value="Salvar Usuário" onclick="salvarUsuario();" />
+	</form>
+  </body>
+</html>
+<script type="text/javascript">
+	var isFirefox = typeof InstallTrigger !== 'undefined';
+
+	window.onload = function() {
+	  listaTiposUsuario();
+	}
+
+	function validarLogin() {
+
+		var oParams    = new Object();
+		oParams.method = 'validaLogin';
+		oParams.login  = document.getElementById('login').value;
+	
+		AJAXRequest("POST", oParams, "retornoValidarLogin");
+	}
+
+	function retornoValidarLogin(oAjax) {
+
+		if (oAjax.status == 1) {
+
+			alert(oAjax.msg);
+			return false;
+		} else {
+
+	 		if (oAjax.existe_login) {
+                document.getElementById('erro_login').style.display = 'block';
+                document.getElementById('correto_login').style.display = 'none';
+                document.getElementById('btnSalvar').disabled = true;
+            } else {
+                document.getElementById('erro_login').style.display = 'none';
+                document.getElementById('correto_login').style.display = 'block';
+                document.getElementById('btnSalvar').disabled = false;
+            }
+		}
+	}
+
+	function salvarUsuario() {
+
+		if (isFirefox) {
+			var data_nasc  = dateToEN(document.getElementById('data_nasc').value);
+		} else {
+			var data_nasc  = document.getElementById('data_nasc').value;
+		}
+
+		var oParams           = new Object();
+		oParams.method        = 'salvarUsuario';
+		oParams.nome_usuario  = document.getElementById('nome_usuario').value
+		oParams.login_usuario = document.getElementById('login').value;
+		oParams.data_nasc     = data_nasc;
+		oParams.equipe        = readSession('id_equipe');
+		oParams.tipo_usuario  = document.getElementById('tipo_usuario').value;
+		
+		if (oParams.nome_usuario == "" || oParams.login_usuario == "" || oParams.data_nasc == "" || oParams.equipe == "" || oParams.tipo_usuario == 0) {
+			alert("Todos os campos devem ser preenchidos.");
+			return false;
+		}
+
+		AJAXRequest("POST", oParams, "retornoSalvar");
+	}
+
+	function retornoSalvar(oAjax) {
+
+		if (oAjax.status == 1) {
+			alert(oAjax.msg);
+			return false;
+		} else {
+			alert(oAjax.msg);
+			window.location.href = "novo_usuario.html";
+			return true;
+		}
+	}
+
+	//Buscar os tipos de usuário e colocar no select
+	function listaTiposUsuario(){
+	
+		var oParams    = new Object();
+		oParams.method = 'getTipoUsuario';
+	
+		AJAXRequest("POST", oParams, "completaListaTiposUsuario");
+	}
+	
+	
+	function completaListaTiposUsuario(oAjax) {
+	
+		if (oAjax.status == 1) {
+	
+			alert("Erro ao listar os tipos de usuário. Contate o administrador");
+			return false;
+		} else {
+	
+		 	var select        = document.getElementById('tipo_usuario');
+		 	var fragment      = document.createDocumentFragment();
+		 	var tipos_usuario = oAjax.aTipoUsuario;
+	
+			tipos_usuario.forEach(function(tipo_usuario, index){
+				var opt = document.createElement("option");
+				opt.value = tipo_usuario.id_tipousuario;
+				opt.innerHTML = tipo_usuario.descricao;
+				fragment.appendChild(opt);
+			});
+			select.appendChild(fragment);
+			return true;
+		}
+	}
+</script>

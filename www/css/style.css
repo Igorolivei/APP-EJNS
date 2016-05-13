@@ -172,6 +172,17 @@ input[type='submit']:hover, input[type='button']:hover
 	color : red;
 }
 
+.correto {
+	font-family: Helvetica, serif, Arial;
+	font-style : italic;
+	font-weight: normal;
+	font-size  : 15px;
+	margin-left: 15%;
+	margin-right: 15%;
+	text-align: center;
+	color : green;
+}
+
 /* menu bar */
 
 ul {
