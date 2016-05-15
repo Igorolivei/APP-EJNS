@@ -32,6 +32,6 @@
   function valida_permissao() {
   	
   	document.getElementById('btn_equipista').style.visibility = readSession('responde') == 1 ? 'visible' : 'hidden';
-  	document.getElementById('btn_lider').style.visibility = readSession('le_respostas') ? 'visible' : 'hidden';
+  	document.getElementById('btn_lider').style.visibility = readSession('le_respostas') == 1 ? 'visible' : 'hidden';
   }
 </script>

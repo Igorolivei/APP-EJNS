@@ -1,0 +1,113 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="js/sessionCookie.js" type="text/javascript"></script>
+  <script src="js/js_utils.js" type="text/javascript"></script>
+  <body>
+  	<ul>
+	  <li><a class="active" href="seleciona_tela.html">Início</a></li>
+	  <li><a href="avisos.html">Avisos</a></li>
+	  <li><a href="alterar_senha.html">Alterar Senha</a></li>
+	  <li><a onclick="js_sair();">Sair</a></li>
+	</ul>
+	<form id="altera_senha" onsubmit="return false;">
+		<div id="campos_senha">
+			<fieldset>
+			<legend>Alteração do Vice Conselheiro:</legend>
+				<select id="novo_vice">
+					<option value="0">Nenhum</option>
+				</select><br><br>
+	    		<p id="aviso"><strong>Atenção: Só é possível haver um vice. O vice atual se tornará um equipista.</strong></p>
+			</fieldset>
+		</div>
+	<input id="btnAlterar" type="button" value="Alterar Vice" onclick="alterarVice();" />
+	</form>
+  </body>
+</html>
+<script type="text/javascript">
+
+	window.onload = function() {
+	  listaEquipistas();
+	}
+
+	/*function verificaViceAtual() {
+
+		var oParams    = new Object();
+		oParams.method = 'verificaViceEquipe';
+		oParams.equipe = readSession('id_equipe');
+
+		AJAXRequest("POST", oParams, "retornoViceAtual");
+	}
+
+	function retornoViceAtual(oAjax) {
+
+		if (oAjax.status == 1) {
+			alert(oAjax.msg);
+			return false;
+		} else {
+			listaEquipistas();
+			return true;
+		}
+	}*/
+
+	function alterarVice() {
+
+		var oParams       = new Object();
+		oParams.method    = 'setViceEquipe';
+		oParams.novo_vice = document.getElementById('novo_vice').value;
+		oParams.equipe    = readSession('id_equipe');
+		
+		if (oParams.novo_vice == 0) {
+			alert("Um usuário deve ser selecionado.");
+			return false;
+		}
+
+		AJAXRequest("POST", oParams, "retornoAlterar");
+	}
+
+	function retornoAlterar(oAjax) {
+
+		if (oAjax.status == 1) {
+			alert(oAjax.msg);
+			return false;
+		} else {
+			alert(oAjax.msg);
+			window.location.href = "home_lider.html";
+			return true;
+		}
+	}
+
+	//Buscar os equipistas e colocar no select
+	function listaEquipistas(){
+
+		var oParams    = new Object();
+		oParams.method = 'getUsuarioConselheiro';
+		oParams.id_conselheiro = readSession('id_usuario');
+
+		AJAXRequest("POST", oParams, "completaListaEquipistas");
+	}
+
+
+	function completaListaEquipistas(oAjax) {
+
+		if (oAjax.status == 1) {
+
+			alert("Erro ao listar os usuários. Contate o administrador");
+			return false;
+		} else {
+
+		 	var select = document.getElementById('novo_vice');
+		 	var fragment = document.createDocumentFragment();
+		 	var equipistas = oAjax.aEquipistas;
+
+			equipistas.forEach(function(equipista, index){
+				var opt = document.createElement("option");
+				opt.value = equipista.id_equipista;
+				opt.innerHTML = equipista.nome;
+				fragment.appendChild(opt);
+			});
+			select.appendChild(fragment);
+			return true;
+		}
+	}
+</script>

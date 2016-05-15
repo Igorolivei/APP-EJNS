@@ -207,18 +207,18 @@ switch ($oParams->method) {
 		$salvaUsuario->bindParam(':d' , $data_nasc);
 		$salvaUsuario->bindParam(':tu', $tipo_usuario);
 		$salvaUsuario->bindParam(':e' , $equipe);
-		$status_usuario = $salvaUsuario->execute();
+		$statusUsuario = $salvaUsuario->execute();
 
-		if ($status_usuario) {
+		if ($statusUsuario) {
 
 			$senha = '202cb962ac59075b964b07152d234b70';
-			$sql_login = "INSERT INTO usuario_login (login, senha, id_usuario) VALUES (:l, :s, (SELECT max(id_usuario) FROM usuario))";
-			$salvaLogin = $pdo->prepare($sql_login);
+			$sqlLogin = "INSERT INTO usuario_login (login, senha, id_usuario) VALUES (:l, :s, (SELECT max(id_usuario) FROM usuario))";
+			$salvaLogin = $pdo->prepare($sqlLogin);
 			$salvaLogin->bindParam(':l' , $login);
 			$salvaLogin->bindParam(':s' , $senha);
-			$status_login = $salvaLogin->execute();
+			$statusLogin = $salvaLogin->execute();
 			
-			if ($status_login) {
+			if ($statusLogin) {
 				$oRetorno->msg = "Usuário salvo.";
 			} else {
 				$oRetorno->status = 1;
@@ -274,12 +274,67 @@ switch ($oParams->method) {
 	
 	break;
 	
+	case 'verificaViceEquipe':
+
+		$equipe = $oParams->equipe;
+		$sqlViceAtual = "SELECT * FROM usuario WHERE id_tipousuario = 2 and id_equipe = {$equipe} LIMIT 1";
+		$resultViceAtual = $pdo->query($sqlViceAtual);
+		$count = $resultViceAtual->fetchColumn();
+		if ($count == 0) {
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Não há nenhum vice cadastrado. Você pode utilizar o cadastro de usuários para isso.";
+			echo json_encode($oRetorno);
+			break;
+		}		
+		echo json_encode($oRetorno);
+	break;
+
 	case 'getViceEquipe':
 
 	break;
 
 	case 'setViceEquipe':
 
+		$novoVice = $oParams->novo_vice;
+		$equipe = $oParams->equipe;
+
+		//Verifica se já existe um vice
+		$sqlViceAtual = "SELECT id_usuario FROM usuario WHERE id_tipousuario = 2 and id_equipe = {$equipe} LIMIT 1";
+		$resultViceAtual = $pdo->query($sqlViceAtual);
+		$viceAnterior = $resultViceAtual->fetchColumn();
+		if ($viceAnterior == 0) {
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Não há nenhum vice cadastrado. Você pode utilizar o cadastro de usuários para isso.";
+			echo json_encode($oRetorno);
+			break;
+		}
+
+		//Atualiza o usuário que era vice
+		$sqlViceAnterior = "UPDATE usuario SET id_tipousuario = 6 WHERE id_usuario = {$viceAnterior}";
+		$atualizaViceAnterior = $pdo->prepare($sqlViceAnterior);
+		$statusViceAnterior = $atualizaViceAnterior->execute();
+
+		if (!$statusViceAnterior) {
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Não foi possível atualizar o vice anterior. Contate o administrador.";
+			echo json_encode($oRetorno);
+			break;
+		}
+
+		//Atualiza o usuário que será o novo vice
+		$sqlNovoVice = "UPDATE usuario SET id_tipousuario = 2 WHERE id_usuario = {$novoVice}";
+		$atualizaNovoVice = $pdo->prepare($sqlNovoVice);
+		$statusNovoVice = $atualizaNovoVice->execute();
+
+		if (!$statusNovoVice) {
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Não foi possível atualizar o vice. Contate o administrador.";
+			echo json_encode($oRetorno);
+			break;
+		}
+
+		$oRetorno->msg = "Vice atualizado com sucesso.";
+		echo json_encode($oRetorno);
 	break;
 
 	
