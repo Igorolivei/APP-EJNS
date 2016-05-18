@@ -92,12 +92,31 @@ CREATE TABLE usuario_questionario (
 
 CREATE TABLE IF NOT EXISTS aviso (
   id_aviso INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  titulo TEXT NOT NULL,
   texto TEXT NOT NULL,
+  id_usuario INT UNSIGNED NOT NULL,
   id_equipe INT UNSIGNED NOT NULL,
   ativo BOOL NOT NULL,
   PRIMARY KEY(id_aviso),
   FOREIGN KEY(id_equipe)
-    REFERENCES equipe(id_equipe)
+    REFERENCES equipe(id_equipe),
+  FOREIGN KEY(id_usuario)
+    REFERENCES usuario(id_usuario)
 );
 
 --INSERT INTO AVISO (texto, id_equipe, ativo) VALUES ('Bem-vindo!', 1, true);
+
+CREATE TABLE usuario_aviso (
+  id_usuarioaviso INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  id_usuario INT UNSIGNED NOT NULL,
+  id_aviso INT UNSIGNED NOT NULL,
+  PRIMARY KEY(id_usuarioaviso),
+  FOREIGN KEY(id_usuario)
+    REFERENCES usuario(id_usuario)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(id_aviso)
+    REFERENCES aviso(id_aviso)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);

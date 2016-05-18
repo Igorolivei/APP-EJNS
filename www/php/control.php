@@ -421,11 +421,81 @@ switch ($oParams->method) {
 
 	//AVISO
 
-	case 'getAvisosAtivos':
+	case 'getAvisosNaoLidos':
 
+		$usuario    = $oParams->id_usuario;
+		$equipe     = $oParams->id_equipe;
+		$sSqlAvisos = "SELECT 
+						a.titulo,
+						a.texto,
+						a.id_usuario,
+						u.nome
+					   FROM aviso a
+					   	INNER JOIN usuario u ON u.id_usuario = a.id_usuario
+					   WHERE a.ativo = true 
+					     and a.id_equipe = {$equipe}
+					     and a.id_usuario not in (SELECT id_usuario 
+					     						  FROM usuario_aviso ua
+					     						  WHERE ua.id_aviso = a.id_aviso)";
+	break;
+
+	case 'getAvisos':
+
+		$equipe = $oParams->id_equipe;
+		$sSqlAvisos = "SELECT 
+						a.titulo,
+						a.texto,
+						a.id_usuario,
+						u.nome
+					   FROM aviso a
+					   	INNER JOIN usuario u ON u.id_usuario = a.id_usuario
+					   WHERE a.ativo = true and a.id_equipe = {$equipe}";
+	break;
+
+	case 'confirmaVisualizacao':
+
+		$usuario = $oParams->id_usuario;
+		$aviso   = $oParams->id_aviso;
+
+		$sql = "INSERT INTO usuario_aviso (id_usuario, id_aviso) VALUES (:u, :a)";
+
+		$salvaLeituraAviso = $pdo->prepare($sql);
+		$salvaLeituraAviso->bindParam(':u' , $usuario);
+		$salvaLeituraAviso->bindParam(':a' , $aviso);
+		$statusLeituraAviso = $salvaLeituraAviso->execute();
+
+		if (!$statusLeituraAviso) {
+
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Erro ao confirmar a leitura do aviso. Contate o administrador.";
+		}
+
+		echo json_encode($oRetorno);
 	break;
 
 	case 'cadastraAviso':
+
+		$titulo  = $oParams->titulo;
+		$texto   = $oParams->conteudo;
+		$usuario = $oParams->id_usuario;
+		$equipe  = $oParams->id_equipe;
+
+		$sql = "INSERT INTO aviso (titulo, texto, id_usuario, id_equipe, ativo) VALUES (:ti, :te, :u, :e, 1)";
+
+		$salvaAviso = $pdo->prepare($sql);
+		$salvaAviso->bindParam(':ti', $titulo);
+		$salvaAviso->bindParam(':te', $texto);
+		$salvaAviso->bindParam(':u' , $usuario);
+		$salvaAviso->bindParam(':e' , $equipe);
+		$statusAviso = $salvaAviso->execute();
+
+		if (!$statusAviso) {
+
+			$oRetorno->status = 1;
+			$oRetorno->msg    = "Erro ao salvar o aviso. Contate o administrador.";
+		}
+
+		echo json_encode($oRetorno);
 
 	break;
 

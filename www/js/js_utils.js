@@ -80,7 +80,7 @@ function AJAXRequest(method, oParams, onComplete){
 
   	var Ajax = new XMLHttpRequest();
   	
-    Ajax.open(method, "http://192.168.0.5:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
+    Ajax.open(method, "http://192.168.0.2:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
     //Ajax.open(method, "http://ppvejnsapp.com.br/control.php?oParams="+JSON.stringify(oParams), true);
     Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
@@ -105,4 +105,46 @@ function AJAXRequest(method, oParams, onComplete){
     }
 
     Ajax.send(JSON.stringify(oParams));
+}
+
+
+/* ======= POPUP ======= */
+
+function popup(sTitulo, sConteudo, sTexto_btn, eventOnClick, element) {
+
+    var event_fecha_popup = "document.getElementById('popup').style.display='none'; ";
+
+    var div_popup   = document.createElement("div");
+    var class_div   = document.createAttribute("class");
+    class_div.value = "popup";
+    div_popup.setAttributeNode(class_div);
+    var id_div   = document.createAttribute("id");
+    id_div.value = "popup";
+    div_popup.setAttributeNode(id_div);
+
+    var titulo       = document.createElement("h1");
+    var titulo_texto = document.createTextNode(sTitulo);
+    titulo.appendChild(titulo_texto);
+    div_popup.appendChild(titulo);
+
+    var conteudo       = document.createElement("p");
+    var conteudo_texto = document.createTextNode(sConteudo);
+    conteudo.appendChild(conteudo_texto);
+    div_popup.appendChild(conteudo);
+
+    var btn        = document.createElement("input");
+    var type_btn   = document.createAttribute("type");
+    type_btn.value = "button";
+    btn.setAttributeNode(type_btn);
+    var value_btn   = document.createAttribute("value");
+    value_btn.value = sTexto_btn;
+    btn.setAttributeNode(value_btn);
+    var onclick_btn   = document.createAttribute("onclick");
+    onclick_btn.value = event_fecha_popup + eventOnClick;
+    btn.setAttributeNode(onclick_btn);
+    div_popup.appendChild(btn);
+
+    var myElement = document.getElementById(element);
+    document.body.appendChild(div_popup);
+    //document.body.insertBefore(div_popup, myElement);
 }

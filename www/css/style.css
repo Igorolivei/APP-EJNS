@@ -208,3 +208,14 @@ li a {
 li a:hover {
     background-color: #111;
 }
+
+/* popup */
+.popup{
+    display: block;
+    position: absolute;
+    top:10%;
+    left:10%;
+    width: 80%;
+    border: 1px solid #d0d0d0;
+    background-color: #dcdf00;
+}
