@@ -81,26 +81,24 @@ input[type='text']:hover, input[type='password']:hover
 /* CSS for textarea */
 textarea
 {
-	width: 200px;
-	height: 90px;
+	width: 70%;
+	height: 50%;
 	border-radius: 3px;
 	border: 1px solid #CCC;
-	padding: 8px;
 	margin-left: 15%;
 	font-weight: 200;
-	font-size: 15px;
+	font-size: 25px;
 	font-family: Verdana;
 	box-shadow: 1px 1px 5px #CCC;
 }
 textarea:hover
 {
-	width: 200px;
-	height: 90px;
+	width: 70%;
+	height: 50%;
 	border-radius: 3px;
 	border: 1px solid #aaa;
-	padding: 8px;
 	font-weight: 200;
-	font-size: 15px;
+	font-size: 25px;
 	font-family: Verdana;
 	box-shadow: 1px 1px 5px #CCC;
 }

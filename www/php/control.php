@@ -429,6 +429,7 @@ switch ($oParams->method) {
 						a.titulo,
 						a.texto,
 						a.id_usuario,
+						a.data,
 						u.nome
 					   FROM aviso a
 					   	INNER JOIN usuario u ON u.id_usuario = a.id_usuario
@@ -446,6 +447,7 @@ switch ($oParams->method) {
 						a.titulo,
 						a.texto,
 						a.id_usuario,
+						a.data,
 						u.nome
 					   FROM aviso a
 					   	INNER JOIN usuario u ON u.id_usuario = a.id_usuario
@@ -477,14 +479,16 @@ switch ($oParams->method) {
 
 		$titulo  = $oParams->titulo;
 		$texto   = $oParams->conteudo;
+		$data    = $oParams->data;
 		$usuario = $oParams->id_usuario;
 		$equipe  = $oParams->id_equipe;
 
-		$sql = "INSERT INTO aviso (titulo, texto, id_usuario, id_equipe, ativo) VALUES (:ti, :te, :u, :e, 1)";
+		$sql = "INSERT INTO aviso (titulo, texto, data, id_usuario, id_equipe, ativo) VALUES (:ti, :te, :d, :u, :e, 1)";
 
 		$salvaAviso = $pdo->prepare($sql);
 		$salvaAviso->bindParam(':ti', $titulo);
 		$salvaAviso->bindParam(':te', $texto);
+		$salvaAviso->bindParam(':d' , $data);
 		$salvaAviso->bindParam(':u' , $usuario);
 		$salvaAviso->bindParam(':e' , $equipe);
 		$statusAviso = $salvaAviso->execute();

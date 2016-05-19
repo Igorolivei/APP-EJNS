@@ -94,14 +94,19 @@ CREATE TABLE IF NOT EXISTS aviso (
   id_aviso INT UNSIGNED NOT NULL AUTO_INCREMENT,
   titulo TEXT NOT NULL,
   texto TEXT NOT NULL,
-  id_usuario INT UNSIGNED NOT NULL,
-  id_equipe INT UNSIGNED NOT NULL,
+  data DATE NOT NULL,
+  id_usuario INT NOT NULL,
+  id_equipe INT NOT NULL,
   ativo BOOL NOT NULL,
   PRIMARY KEY(id_aviso),
-  FOREIGN KEY(id_equipe)
-    REFERENCES equipe(id_equipe),
   FOREIGN KEY(id_usuario)
     REFERENCES usuario(id_usuario)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(id_equipe)
+    REFERENCES equipe(id_equipe)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
 );
 
 --INSERT INTO AVISO (texto, id_equipe, ativo) VALUES ('Bem-vindo!', 1, true);
