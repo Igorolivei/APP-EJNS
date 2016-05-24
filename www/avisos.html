@@ -11,45 +11,40 @@
 	  <li><a onclick="js_sair();">Sair</a></li>
 	</ul>
 	<form id="altera_senha" onsubmit="return false;">
-		<div id="campos_senha">
-			<fieldset>
-			<legend>Avisos:</legend>
-				<p>Nome:</p><br>
-				<input type="text" id="nome_usuario" /><br>
-				<p>Login:</p><br>
-				<input type="text" id="login" onkeyup="validarLogin();" /><br>
-	    		<p id="erro_login" style="display: none" class="erro">Login já em uso</p><br>
-	    		<p id="correto_login" style="display: none" class="correto">Login disponível</p><br>
-	    		<p>Data de Nascimento:</p><br>
-	    		<input type="date" id="data_nasc" onfocus="this.value='';" onchange="if (this.value == '') { this.value = dateToBR(getToday()); } "><br>
-				<p>Tipo do Usuário:</p><br>
-				<select id="tipo_usuario">
-					<option value="Nenhum">Nenhum</option>
-				</select><br><br>
-			</fieldset>
-		</div>
+		<h1 style="text-align: center;">Avisos</h1>
 	</form>
   </body>
 </html>
 <script type="text/javascript">
 	window.onload = function () {
-		listaAvisos();
+		lista_avisos();
 	}
 
-	function listaAvisos() {
+	function lista_avisos() {
 
+		var oParams    = new Object();
+		oParams.method = 'getAvisos';
+		oParams.id_equipe  = readSession('id_equipe');
+
+		AJAXRequest("POST", oParams, "retorna_avisos");
 	}
 
-	function retornaAvisos() {
-
+	function retorna_avisos(oAjax) {
+		if (oAjax.status == 0) {
+	 		var avisos = oAjax.aAvisos;
+	
+			avisos.forEach(function(aviso, index){
+				cria_aviso(aviso.titulo, aviso.texto, aviso.nome, aviso.data);
+			});
+		}
 	}
 
-	function criaAviso(sTitulo, sConteudo, sAutor, sData) {
+	function cria_aviso(sTitulo, sConteudo, sAutor, sData) {
 
 		var div_aviso    = document.createElement("div");
 
 	    var titulo       = document.createElement("h1");
-	    var titulo_texto = document.createTextNode(sData+' - '+sTitulo);
+	    var titulo_texto = document.createTextNode(sTitulo);
 	    titulo.appendChild(titulo_texto);
 	    div_aviso.appendChild(titulo);
 	
@@ -59,14 +54,14 @@
 	    div_aviso.appendChild(conteudo);
 	
 		var autor       = document.createElement("p");
-	    var autor_texto = document.createTextNode(sAutor);
+	    var autor_texto = document.createTextNode(sAutor+' - '+sData);
 	    autor.appendChild(autor_texto);
-	    var align_autor = document.createAttribute("style");
-	    align_autor     = "text-align: right;";
+	    var align_autor   = document.createAttribute("style");
+	    align_autor.value = "text-align: right;";
 	    autor.setAttributeNode(align_autor);
 	    div_aviso.appendChild(autor);
 	
-	    var myElement = document.getElementById(element);
+	    //var myElement = document.getElementById(element);
 	    document.body.appendChild(div_aviso);
 	}
 

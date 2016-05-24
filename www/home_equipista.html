@@ -245,7 +245,6 @@ function completaRespostas(oAjax) {
 		var data_form = isFirefox ? new Date(dateToEN(document.getElementById('dataFiltro').value)) : new Date(document.getElementById('dataFiltro').value);
 		var diaForm = data_form.getUTCDate();
 		var diaHoje = getToday().getUTCDate();
-		alert(diaHoje);
 
 		if(diaForm == 25) {
 

@@ -426,6 +426,7 @@ switch ($oParams->method) {
 		$usuario    = $oParams->id_usuario;
 		$equipe     = $oParams->id_equipe;
 		$sSqlAvisos = "SELECT 
+						a.id_aviso,
 						a.titulo,
 						a.texto,
 						a.id_usuario,
@@ -435,9 +436,39 @@ switch ($oParams->method) {
 					   	INNER JOIN usuario u ON u.id_usuario = a.id_usuario
 					   WHERE a.ativo = true 
 					     and a.id_equipe = {$equipe}
+					   	 and a.id_usuario = {$usuario}
 					     and a.id_usuario not in (SELECT id_usuario 
 					     						  FROM usuario_aviso ua
 					     						  WHERE ua.id_aviso = a.id_aviso)";
+
+		$resultAvisos = $pdo->query($sSqlAvisos);
+
+		$aResultadoAvisos = array();
+		$aResultadoAvisos = $resultAvisos->fetchAll();
+		
+		if (!empty($aResultadoAvisos)) {
+
+			$aAvisos = Array();
+			
+			foreach ($aResultadoAvisos as $row) {
+				
+				$aviso = new stdObject();
+				$aviso->id_aviso   = $row['id_aviso'];
+				$aviso->titulo 	   = $row['titulo'];
+				$aviso->texto 	   = $row['texto'];
+				$aviso->id_usuario = $row['id_usuario'];
+				$aviso->data 	   = $row['data'];
+				$aviso->nome 	   = $row['nome'];
+			 	$aAvisos[] = $aviso; 
+			}
+			
+			$oRetorno->aAvisos = $aAvisos;
+		} else {
+
+			$oRetorno->status = 1;
+		}
+
+		echo json_encode($oRetorno);
 	break;
 
 	case 'getAvisos':
@@ -452,6 +483,34 @@ switch ($oParams->method) {
 					   FROM aviso a
 					   	INNER JOIN usuario u ON u.id_usuario = a.id_usuario
 					   WHERE a.ativo = true and a.id_equipe = {$equipe}";
+
+		$resultAvisos = $pdo->query($sSqlAvisos);
+
+		$aResultadoAvisos = array();
+		$aResultadoAvisos = $resultAvisos->fetchAll();
+		
+		if (!empty($aResultadoAvisos)) {
+
+			$aAvisos = Array();
+			
+			foreach ($aResultadoAvisos as $row) {
+				
+				$aviso = new stdObject();
+				$aviso->titulo 	   = $row['titulo'];
+				$aviso->texto 	   = $row['texto'];
+				$aviso->id_usuario = $row['id_usuario'];
+				$aviso->data 	   = $row['data'];
+				$aviso->nome 	   = $row['nome'];
+			 	$aAvisos[] = $aviso; 
+			}
+			
+			$oRetorno->aAvisos = $aAvisos;
+		} else {
+
+			$oRetorno->status = 1;
+		}
+
+		echo json_encode($oRetorno);
 	break;
 
 	case 'confirmaVisualizacao':

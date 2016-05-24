@@ -11,9 +11,9 @@
 	</head>
 	<!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<body onload="valida_permissao();">
+	<body>
 	  <form id="login" onsubmit="return false;">
-	  	
+
 	    <input type="button" id="btn_lider" value="Líder/Vice" style="margin-top: 35%" onclick="redirecionar_tela(1);" />
 	    <br><br>
 	    <input type="button" id="btn_equipista" value="Equipista" onclick="redirecionar_tela(2);" />
@@ -24,15 +24,42 @@
 
   window.onload = function () {
   	verifica_avisos();
+  	valida_permissao();
   }
 
   function verifica_avisos() {
-  	alert("Verificando");
-  	popup('Aviso', 'Este é o exemplo de um aviso', 'Confirmar', 'confirma_leitura()', 'login');
+  	var oParams    = new Object();
+	oParams.method = 'getAvisosNaoLidos';
+	oParams.id_usuario = readSession('id_usuario');
+	oParams.id_equipe  = readSession('id_equipe');
+
+	AJAXRequest("POST", oParams, "completa_avisos");
+  }
+
+  function completa_avisos(oAjax) {
+  	if (oAjax.status == 0) {
+	 	var avisos = oAjax.aAvisos;
+
+		avisos.forEach(function(aviso, index){
+			popup(aviso.id_aviso, aviso.titulo, aviso.texto, 'Ok', 'confirma_leitura();', 'login');
+		});
+	}
   }
 
   function confirma_leitura() {
-  	alert("Leitura confirmada");
+
+  	var oParams    = new Object();
+	oParams.method = 'confirmaVisualizacao';
+	oParams.id_usuario = readSession('id_usuario');
+	oParams.id_aviso   = document.getElementById('id').value;
+
+  	AJAXRequest("POST", oParams, "completa_confirmacao");
+  }
+
+  function completa_confirmacao(oAjax) {
+  	if (oAjax.status == 1) {
+  		alert("Erro ao confirmar a leitura do aviso. Contate o administrador.");
+  	}
   }
 
   function redirecionar_tela(tipo) {

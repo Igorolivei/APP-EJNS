@@ -80,8 +80,8 @@ function AJAXRequest(method, oParams, onComplete){
 
   	var Ajax = new XMLHttpRequest();
   	
-    Ajax.open(method, "http://192.168.0.2:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
-    //Ajax.open(method, "http://ppvejnsapp.com.br/control.php?oParams="+JSON.stringify(oParams), true);
+    //Ajax.open(method, "http://192.168.0.2:4343/EJNS/control.php?oParams="+JSON.stringify(oParams), true);
+    Ajax.open(method, "http://ppvejnsapp.com.br/control.php?oParams="+JSON.stringify(oParams), true);
     Ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     Ajax.onreadystatechange = function () {
@@ -110,7 +110,7 @@ function AJAXRequest(method, oParams, onComplete){
 
 /* ======= POPUP ======= */
 
-function popup(sTitulo, sConteudo, sTexto_btn, eventOnClick, element) {
+function popup(iId, sTitulo, sConteudo, sTexto_btn, eventOnClick, element) {
 
     var event_fecha_popup = "document.getElementById('popup').style.display='none'; ";
 
@@ -121,6 +121,18 @@ function popup(sTitulo, sConteudo, sTexto_btn, eventOnClick, element) {
     var id_div   = document.createAttribute("id");
     id_div.value = "popup";
     div_popup.setAttributeNode(id_div);
+
+    var id           = document.createElement("input");
+    var id_inputid   = document.createAttribute("id");
+    id_inputid.value = "id";
+    id.setAttributeNode(id_inputid);
+    var type_id   = document.createAttribute("type");
+    type_id.value = "hidden";
+    id.setAttributeNode(type_id);
+    var value_id   = document.createAttribute("value");
+    value_id.value = iId;
+    id.setAttributeNode(value_id);
+    div_popup.appendChild(id);
 
     var titulo       = document.createElement("h1");
     var titulo_texto = document.createTextNode(sTitulo);
@@ -140,7 +152,7 @@ function popup(sTitulo, sConteudo, sTexto_btn, eventOnClick, element) {
     value_btn.value = sTexto_btn;
     btn.setAttributeNode(value_btn);
     var onclick_btn   = document.createAttribute("onclick");
-    onclick_btn.value = event_fecha_popup + eventOnClick;
+    onclick_btn.value = eventOnClick + event_fecha_popup;
     btn.setAttributeNode(onclick_btn);
     div_popup.appendChild(btn);
 

@@ -20,7 +20,38 @@
 				<textarea id="conteudo" ></textarea><br>
 			</fieldset>
 		</div>
-	<input id="btnSalvar" type="button" value="Salvar Aviso" onclick="salvarAviso();" />
+	<input id="btnSalvar" type="button" value="Salvar Aviso" onclick="salvar_aviso();" />
 	</form>
   </body>
+<script type="text/javascript">
+  	function salvar_aviso() {
+
+		var oParams        = new Object();
+		oParams.method     = 'cadastraAviso';
+		oParams.titulo     = document.getElementById('titulo').value
+		oParams.conteudo   = document.getElementById('conteudo').value;
+		oParams.data       = getToday();
+		oParams.id_usuario = readSession('id_usuario');
+		oParams.id_equipe  = readSession('id_equipe');
+		
+		if (oParams.titulo == "" || oParams.conteudo == "") {
+			alert("Todos os campos devem ser preenchidos.");
+			return false;
+		}
+
+		AJAXRequest("POST", oParams, "retorno_salvar");
+	}
+
+	function retorno_salvar(oAjax) {
+
+		if (oAjax.status == 1) {
+			alert("Houve uma falha ao cadastrar o aviso. Entre em contato com o administrador.");
+			return false;
+		} else {
+			alert("Aviso cadastrado com sucesso.");
+			window.location.href = "cadastro_aviso.html";
+			return true;
+		}
+	}
+</script>
 </html>
